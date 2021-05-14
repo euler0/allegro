@@ -1,0 +1,196 @@
+
+I hope I've remembered everyone who ought to be mentioned here. If your 
+name should be included, my apologies, and please tell me so I can correct 
+the oversight!
+
+
+
+======================================
+============ Contributors ============
+======================================
+
+   Adrian Oboroc (ash@cinf.usm.md).
+   Wrote the LBM loader.
+
+   Alex Demko (alex_demko@mbnet.mb.ca).
+   Suggested lots of improvements to the datafile system, and provided code 
+   for handling the 8x16 BIOS font format.
+
+   Arne Steinarson (arst@ludd.luth.se).
+   The fixed point square root routine came from his fix-float library.
+
+   Ben Darnell (bdarnell@vnet.net,
+   http://users.vnet.net/bdarnell).
+   Put together the 2.11 release of Allegro while I was away from the net, 
+   and wrote the original version of the Allegro FAQ.
+
+   Chris La Mantia (lamantia@gte.net).
+   Wrote the d_radio_proc() dialog object, added the D_DISABLED flag, and 
+   improved the GUI handling of different font heights.
+
+   Dave Thomson (gameskitchen@geocities.com,
+   http://www.geocities.com/SiliconValley/Heights/2276/).
+   Added the RGB <-> HSV conversion routines, the autocrop function to 
+   the grabber, and wrote the 3d starfield example program (ex26.exe).
+
+   David Calvin (calvid@rpi.edu,
+   http://icarus.stu.rpi.edu/).
+   Wrote the sound setup utility.
+
+   Dominique Biesmans (Dominique.Biesmans@ping.be,
+   http://www.ping.be/~ping7970/).
+   Wrote the mode-X version of draw_sprite() and the mode-X  linear 
+   blitting functions.
+
+   Fabian Nunez (faybs@iafrica.com).
+   Added support for the CH Flightstick Pro joystick and 3-button mice.
+
+   Francois Charton (deef@pobox.oleane.com).
+   Wrote the Paradise graphics driver, and improved the VGA palette setting 
+   code.
+
+   Garret Thomson (gart@terraport.net,
+   http://www.cybertheque.com/galerie/garret/).
+   Wrote the music used in the demo game.
+
+   Grzegorz Ludorowski (pajonk@ajax.umcs.lublin.pl,
+   http://ajax.umcs.lublin.pl/~pajonk/).
+   Wrote several of the example programs.
+
+   Haruhiko Okumura, 12-2-404 Green Heights, 580 Nagasawa, Yokosuka 239, JP.
+   This guy wrote the original version of the LZSS compression code.
+
+   Jonathan Tarbox (battle.axe@pegasuz.com,
+   http://www.pegasuz.com/binky/).
+   Wrote the mode-X setup code, the FLI/FLC player, and contributed parts of 
+   the joystick handler.
+
+   Marcel de Kogel (m.dekogel@student.utwente.nl).
+   Not content with fixing my broken MPU-401 driver, Marcel went on to 
+   provide a set of vastly improved drum sounds for the OPL driver, to help 
+   me sort out some problems with reentrant interrupts, to supply the half 
+   of the joystick code that didn't come from Jonathan, and to locate a 
+   stupid mistake in my VESA linear framebuffer code.
+
+   Mark Habersack (grendel@ananke.amu.edu.pl,
+   http://ananke.amu.edu.pl/~grendel/index.html).
+   Added support for the more recent Trident chipsets.
+
+   Mark Wodrich (mwodric@eleceng.uct.ac.za).
+   The brain behind sub-bitmaps, flicker-free mouse pointers, and the 
+   ability to import GRX .FNT files into the grabber.
+
+   Markus F.X.J. Oberhumer (markus.oberhumer@jk.uni-linz.ac.at).
+   Fixed the Video-7 scrolling function, optimised the color mapping 
+   routines, and made many useful suggestions like the addition of a 
+   vid_phys_base field to the graphics driver structure.
+
+   Matthew Bowie (catcat@nmt.edu).
+   Added support for 4-button joysticks.
+
+   Nathan Albury, aka Rubicant (gt4558a@prism.gatech.edu,
+   http://www.prism.gatech.edu/~gt4558a/).
+   Improved the fire routine in examples/ex11.c (my original version didn't 
+   really look very much like flames :-) and gave me some extremely useful 
+   ideas about how to implement translucency.
+
+   Owen Embury (owen@gememail.demon.co.uk).
+   Wrote part of the translucency/lighting code.
+
+   Paul Furber (paul@sprintlink.co.za).
+   Provided the floating point apply_matrix_f() function.
+
+   Peter Monks (Peter_Monks@australia.notes.pw.com).
+   Wrote the Video-7 graphics driver, and showed me how to set up the 
+   unchained 640x400 mode.
+
+   Salvador Eduardo Tropea (salvador@inti.edu.ar).
+   Improved the keyboard routines (better handling of extended scancodes, 
+   keyboard LED support, capslock and numlock, and alt+numpad input).
+
+   Seymour Shlien (seymour@dgbt.doc.ca).
+   Contributed the Windows BMP file reader and bezier spline drawer.
+
+   TBD/FeR (tbd@usa.net,
+   http://www.sorostm.ro/nhv/).
+   Added the 320x600 and 360x600 resolutions to the mode-X driver.
+
+   Tim Gunn (timgunn@eastwind.com.au).
+   Wrote the TGA reading/writing routines.
+
+   Tom Novelli (tnovelli@cyber3.servtech.com).
+   Wrote the digital MIDI driver.
+
+
+
+=================================
+============ Thanks! ============
+=================================
+
+   First, a big thank you to all the people who helped me test and debug 
+   this code. It sometimes gets frustrating to receive hundreds of messages 
+   saying "it doesn't work!", but they are useful all the same...
+
+   Andre Baresel (baresel@informatik.hu-berlin.de),
+   and Craig Jackson (Craig.Jackson@launchpad.unc.edu),
+   provided a tremendous amount of information about SB hardware.
+
+   Charles Sandmann (sandmann@clio.rice.edu),
+   DJ Delorie (dj@delorie.com),
+   Eli Zaretskii (eliz@is.elta.co.il),
+   and everyone else who has contributed to djgpp. I love it.
+
+   C. Schwerdtfeger (schwerdt@physics.ubc.ca),
+   for his help (and enourmous patience!) in getting the SB Pro-I MIDI 
+   driver to work.
+
+   Finn Thoegersen, Nordbanevej 3 C, DK-7800 Skive, Denmark.
+   Most of my SVGA hardware information came from his VGADOC package.
+
+   Eric Jorgensen (smeagol@rt66.com).
+   Varmint's Audio Tools (VAT) gave me many useful ideas about how to play 
+   MIDI files.
+
+   Jean-Paul Mikkers (mikmak@stack.urc.tue.nl).
+   MikMod was the source of a lot of information about programming the SB, 
+   and also gave me the idea of dynamically reprogramming the PIT to get a 
+   really high resolution timer.
+
+   Joel H. Hunter (jhunter@kendaco.telebyte.com).
+   His SB library for djgpp is excellent, and helped me a lot.
+
+   John Pollard (74723.1626@compuserve.com).
+   The FM instrument definitions are based on his MID-KIT library.
+
+   Kendall Bennett and all the other cool people at SciTech Software.
+   These guys gave the world UniVBE, the VBE/AF API, and a lot of free 
+   information and example VESA code. Plus they very kindly sent me a copy 
+   of the VBE/AF spec when I wanted one.
+
+   Kris Heidenstrom (kheidens@actrix.gen.nz).
+   His PC timing FAQ was a big help.
+
+   Mark Feldman.
+   It goes without saying that the PCGPE was an invaluable resource.
+
+   Michael Abrash.
+   You just gotta love that man...
+
+   Paul Fenwick (bg914@freenet.carleton.ca).
+   Various bits of the mode-X code (notably the split screen stuff) came 
+   from his XLIBDJ library.
+
+   Robert Schmidt (robert@stud.unit.no).
+   The register values for the 400x* mode-X resolutions came from his TWEAK 
+   program.
+
+   Vladimir Arnost (xarnos00@dcse.fee.vutbr.cz).
+   Provided hardware specs for the OPL3 chip.
+
+   Pink Floyd, the Doors, Tori Amos, Frank Zappa (a recent discovery without 
+   whom I would never have got v2.2 finished :-) and all the other great 
+   musicians who provide me with things to listen to while I am programming.
+
+   My parents, John and Nancy.
+   I would never have made it through all those late night coding sessions 
+   without the cafetiere they gave me last Christmas :-)

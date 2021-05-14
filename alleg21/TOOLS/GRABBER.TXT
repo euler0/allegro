@@ -1,0 +1,156 @@
+
+	      ________            ____  ____ 
+	     /_  __/ /_  ___     / __ \/ / /__  ____ __________ 
+	      / / / __ \/ _ \   / /_/ / / / _ \/ __ `/ ___/ __ \
+	     / / / / / /  __/  / __  / / /  __/ /_/ / /  / /_/ /
+	    /_/ /_/ /_/\___/  /_/ /_/_/_/\___/\__, /_/   \____/ 
+					     /____/ 
+       ______           __    __                 __  ____  _ ___ __ 
+      / ____/________ _/ /_  / /_  ___  _____   / / / / /_(_) (_) /___  __
+     / / __/ ___/ __ `/ __ \/ __ \/ _ \/ ___/  / / / / __/ / / / __/ / / /
+    / /_/ / /  / /_/ / /_/ / /_/ /  __/ /     / /_/ / /_/ / / / /_/ /_/ / 
+    \____/_/   \__,_/_.___/_.___/\___/_/      \____/\__/_/_/_/\__/\__, / 
+								 /____/ 
+
+
+
+			    by Shawn Hargreaves
+
+
+
+
+An Allegro datafile is a bit like a zip file in that it consists of lots of 
+different pieces of data stuck together one after another. This means that 
+your game doesn't have to clutter up the disk with hundreds of tiny files, 
+and it makes programming easier because you can load everything with a 
+single function call at program startup. Another benefit is that the LZSS 
+file compression algorithm works much better with one large file than with 
+many small ones.
+
+Datafiles are created by the grabber utility, and have a .dat extension. 
+They can contain bitmaps, palletes, fonts, samples, MIDI music, FLI/FLC 
+animations, and any other binary data that you import. To load one of these 
+files into memory from within your program, call the routine:
+
+DATAFILE *load_datafile(char *filename);
+   Loads a datafile into memory, and returns a pointer to it, or NULL on 
+   error.
+
+void unload_datafile(DATAFILE *dat);
+   Frees all the objects in a datafile.
+
+When you load a datafile, you will obtain a pointer to an array of DATAFILE 
+structures:
+
+typedef struct DATAFILE
+{
+   void *dat;     - pointer to the actual data
+   int type;      - type of the data
+   long size;     - if type == DAT_DATA, this is the size of the data
+} DATAFILE;
+
+- END OF PAGE -
+
+The type field will be one of the values:
+   DAT_DATA       - dat points to a block of binary data
+   DAT_FONT_8x8   - dat points to an 8x8 fixed pitch font
+   DAT_FONT_PROP  - dat points to a proportional font
+   DAT_BITMAP     - dat points to a BITMAP structure
+   DAT_PALLETE    - dat points to an array of 256 RGB structures
+   DAT_SAMPLE     - dat points to a sample structure
+   DAT_MIDI       - dat points to a MIDI file
+   DAT_RLE_SPRITE - dat points to a RLE_SPRITE structure
+   DAT_FLI        - dat points to an FLI/FLC animation
+   DAT_C_SPRITE   - dat points to a linear compiled sprite
+   DAT_XC_SPRITE  - dat points to a mode-X compiled sprite
+   DAT_END        - special flag to mark the end of the data list
+
+The grabber program will also produce a header file defining the index of 
+each object within the file as a series of #defined constants, using the 
+names you gave the objects in the grabber. So, for example, if you have made 
+a datafile called foo.dat which contains a bitmap called THE_IMAGE, you 
+could display it with the code fragment:
+
+   #include "foo.h"
+
+   DATAFILE *data = load_datafile("foo.dat");
+   draw_sprite(screen, data[THE_IMAGE].dat, x, y);
+
+As well as being useful for including in your C code, the header file is 
+used by the grabber load routine to retrieve the names of the objects.
+
+Grabber functions can be selected from the menu at the top of the screen 
+(using the mouse or by pressing alt+initial to drop down a menu), or by 
+pressing one of the control key shortcuts listed in the menus. You can also 
+access a popup menu by clicking on the background of the screen or pressing 
+ESC.
+
+Load (ctrl+L)
+   Loads a datafile into the grabber program.
+
+Save (ctrl+S)
+   Saves the datafile. There are two versions of this function, which save 
+   the data in compressed and uncompressed format respectively. Compressing 
+   it will reduce the amount of space it takes up, but may involve a bit of 
+   thumb twiddling while the packer does its stuff. If the file already 
+   exists you will be asked whether to overwrite it or backup: if you select 
+   backup the old version of the datafile will be renamed to *.dbk, and the 
+   header file to *.hbk.
+
+Read PCX (ctrl+R)
+   Loads a 256 color PCX file into the image buffer. You must do this before 
+   you can grab data from PCX files.
+
+- END OF PAGE -
+
+View PCX (ctrl+V)
+   Displays the contents of the image buffer.
+
+All the objects in the datafile are listed in the box at the bottom left of 
+the screen, from which you can select one with the mouse or arrow keys. The 
+name of the current object is shown to the right of this box: click here to 
+type in a different name. Double-clicking on an object in the list performs 
+a function which varies depending on the type of the object. Bitmaps and 
+fonts are displayed full-screen, samples and MIDI files are played, and 
+palletes are selected (meaning that they will be used when displaying and 
+exporting bitmaps).
+
+When a bitmap object is selected, the width and height of the bitmap are 
+displayed towards the right of the screen. These can be altered by clicking 
+on them with the left (to decrease) or right (to increase) mouse buttons. To 
+make large alterations, hold down the shift key while you click. If you 
+check the RLE button, the bitmap will be saved as an RLE_SPRITE structure 
+rather than a regular BITMAP structure, and if you check the mode-X or 
+linear compiled sprite buttons, it will be saved as an COMPILED_SPRITE.
+
+New objects can be created from the Object/New/ menu, or from the popup menu 
+which is accessed by pressing ESC or clicking on the screen background.
+
+Delete (del)
+   Deletes the selected object.
+
+Export (ctrl+E)
+   Exports the selected object to a file. You can export all types of 
+   objects except palletes. To save a pallete into a PCX file, select it by 
+   double clicking on it in the item list), and then export a bitmap object, 
+   which will be saved using the selected pallete.
+
+Grab (ctrl+G)
+   If the selected object is a font, a binary data object, a sample, a MIDI 
+   file, or an FLI/FLC animation, this command replaces the object with new 
+   data imported from a file. If it is a bitmap or a pallete, it replaces it 
+   with data grabbed from the image buffer (so you must first read a PCX 
+   file into the image buffer). When grabbing a bitmap you can use the mouse 
+   to select the portion of the image buffer to grab.
+
+Fonts can be read from libgrx FNT files and from PCX files. When reading a 
+font from a PCX file the size of each character is determined by the layout 
+of the image, which should be a rectangular grid containing all the ASCII 
+characters from space (32) up to the tilde (126). The spaces between each 
+letter should be filled with color #255. If each character is sized exactly 
+8x8 the grabber will create a fixed size 8x8 font, otherwise it will make a 
+proportional font. Probably the easiest way to get to grips with how this 
+works is to load up the demo.dat file and export the TITLE_FONT into a pcx 
+file. Have a look at the resulting picture in your paint program: that is 
+the format a font should be in...
+

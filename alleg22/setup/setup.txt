@@ -1,0 +1,103 @@
+Allegro Sound Setup Utility
+by David Calvin
+
+------------
+Introduction
+------------
+
+This program is a simple interface to setting up a sound.cfg file for use
+with Allegro.  It will allow you to autodetect your soundcard or set it up
+manually.  It also provides a test system to make sure the settings you have
+chosen are working properly.
+
+-----
+Files
+-----
+
+setup.cc        Source Code
+setup.exe       Main Program File
+setup.txt       You're reading it now
+setup.dat       Datafile containing test sounds
+sound.cfg       Created by setup.exe to save settings
+
+------------
+Installation
+------------
+
+If you are a user of an Allegro based program, installation is simple.
+Copy setup.exe into the directory of the program you are using and you're 
+all set.
+
+If you are a programmer of an Allegro based program, the follow steps will
+be used to modify setup to work with your program.
+
+1) In setup.cc, change the PROGRAM_NAME #define to the name of your program.
+2) Run make.
+3) Copy the resulting .exe to the location of your program.
+
+If you wish to modify setup to work with additional soundcards, try the
+following:
+
+1) In setup.h, modify the NUM_DIGI_CARDS and NUM_MIDI_CARDS constants to 
+	reflect the new amount of cards supported.
+2) In setup.h, modify the data structures holding the names and specs of
+	the digi and midi cards to account for the new ones.
+3) As long as the new cards work the same way as the old ones, recompile
+	and you should be all set.  NOTE: This has never been tested,
+	additional hacking might be necessary.
+
+-----
+Usage
+-----
+
+The simplest case of usage is this:
+
+1) Run setup.exe
+2) Select Autodetect
+3) Test to make sure the settings work
+4) Save and exit
+
+Setup will automatically read the settings in sound.cfg at startup.  If you
+wish to avoid this, either delete sound.cfg, or run "setup -nodetect".
+
+-------
+Credits
+-------
+
+Written by David Calvin
+You may contact me at "calvid@rpi.edu" to report bugs or make comments or
+whatever.  Unless the bug is severe, I probably won't have time to try to
+fix it, but I'd like to hear about them anyway.  Most users spend an average
+of five seconds in a setup program, it doesn't need to be all that
+wonderful. :)
+
+Thanks to the following people:
+
+Shawn Hargreaves, author of the incredible Allegro game library.  Not only
+did he write this amazing library, but he gladly answered all my annoying
+questions while I was writing this program.  Thanks Shawn!  If Setup did not
+come with Allegro, you can find it at
+"ftp://x2ftp.oulu.fi/pub/msdos/programming/djgpp2/".
+
+DJ Delorie, author of the outstanding DJGPP compiler.  Without his work, none
+of this would have been possible.  DJGPP can be found at
+"http://www.delorie.com/djgpp/".
+
+-----
+Legal
+-----
+
+This program is freeware.  You MAY distribute it anywhere, anyhow, anytime.
+You MAY also modify, hack, alter, disassemble, reassemble, rip apart and
+otherwise molest the source code.  I don't care what you do with it, as
+long as I am given credit somewhere.  If it is used in a commercial product,
+some kind of monetary contribution would be nice.
+
+----
+Bugs
+----
+
+Yes, of course there are some, but they aren't that serious.
+
+Setup will override values in sound.cfg if they do not work.  However, this
+isn't really a bug, it is a feature. :)

@@ -1,0 +1,54 @@
+#  Allegro makefile for djgpp v2
+
+CFLAGS = -MMD -Wall -m486 -O3
+OBJS = allegro.o bitmap.o bmp.o graph.o graphics.o gui.o file.o math.o misc.o
+
+all: allegro.a cp.exe demo.exe grabber.exe mathtest.exe test.exe
+
+%.o: %.c %.d
+	gcc $(CFLAGS) -c $< -o $@
+
+%.o: %.s
+	gcc -Wall -c $< -o $@
+
+clean:
+	del *.o
+	del *.d
+
+allegro.a: $(OBJS)
+	ar r allegro.a $(OBJS)
+
+cp.exe: cp.o allegro.a
+	gcc -o cp cp.o allegro.a
+	strip cp
+	stubify cp
+	del cp
+
+demo.exe: demo.o allegro.a
+	gcc -o demo demo.o allegro.a
+	strip demo
+	stubify demo
+	del demo
+
+grabber.exe: grabber.o allegro.a
+	gcc -o grabber grabber.o allegro.a
+	strip grabber
+	stubify grabber
+	del grabber
+
+mathtest.exe: mathtest.o allegro.a
+	gcc -o mathtest mathtest.o allegro.a
+	strip mathtest
+	stubify mathtest
+	del mathtest
+
+test.exe: test.o allegro.a
+	gcc -o test test.o allegro.a
+	strip test
+	stubify test
+	del test
+
+DEPS := $(wildcard *.d)
+ifneq ($(DEPS),)
+include $(DEPS)
+endif

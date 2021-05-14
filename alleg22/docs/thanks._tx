@@ -1,0 +1,203 @@
+@#
+@# This is the source for the Allegro thanks list, in a weird custom format.
+@# Read makedoc.c for a description of what is going on...
+@#
+@<html>
+@<head>
+@<title>Allegro Contributors</title>
+@<body>
+@<center><h1><b><i>The Hall of Fame</i></b></h1></center><hr>
+<i>
+I hope I've remembered everyone who ought to be mentioned here. If your 
+name should be included, my apologies, and please tell me so I can correct 
+the oversight!
+</i>
+
+
+@heading
+Contributors
+
+   Adrian Oboroc (<a href="mailto:ash@cinf.usm.md">ash@cinf.usm.md</a>).<br>
+   Wrote the LBM loader.
+
+   Alex Demko (<a href="mailto:alex_demko@mbnet.mb.ca">alex_demko@mbnet.mb.ca</a>).<br>
+   Suggested lots of improvements to the datafile system, and provided code 
+   for handling the 8x16 BIOS font format.
+
+   Arne Steinarson (<a href="mailto:arst@ludd.luth.se">arst@ludd.luth.se</a>).<br>
+   The fixed point square root routine came from his fix-float library.
+
+   Ben Darnell (<a href="mailto:bdarnell@vnet.net">bdarnell@vnet.net</a>,
+   <a href="http://users.vnet.net/bdarnell">http://users.vnet.net/bdarnell</a>).<br>
+   Put together the 2.11 release of Allegro while I was away from the net, 
+   and wrote the original version of the Allegro FAQ.
+
+   Chris La Mantia (<a href="mailto:lamantia@gte.net">lamantia@gte.net</a>).<br>
+   Wrote the d_radio_proc() dialog object, added the D_DISABLED flag, and 
+   improved the GUI handling of different font heights.
+
+   Dave Thomson (<a href="mailto:gameskitchen@geocities.com">gameskitchen@geocities.com</a>,
+   <a href="http://www.geocities.com/SiliconValley/Heights/2276/">http://www.geocities.com/SiliconValley/Heights/2276/</a>).<br>
+   Added the RGB &lt-&gt HSV conversion routines, the autocrop function to 
+   the grabber, and wrote the 3d starfield example program (ex26.exe).
+
+   David Calvin (<a href="mailto:calvid@rpi.edu">calvid@rpi.edu</a>,
+   <a href="http://icarus.stu.rpi.edu/">http://icarus.stu.rpi.edu/</a>).<br>
+   Wrote the sound setup utility.
+
+   Dominique Biesmans (<a href="mailto:Dominique.Biesmans@ping.be">Dominique.Biesmans@ping.be</a>,
+   <a href="http://www.ping.be/~ping7970/">http://www.ping.be/~ping7970/</a>).<br>
+   Wrote the mode-X version of draw_sprite() and the mode-X <-> linear 
+   blitting functions.
+
+   Fabian Nunez (<a href="mailto:faybs@iafrica.com">faybs@iafrica.com</a>).<br>
+   Added support for the CH Flightstick Pro joystick and 3-button mice.
+
+   Francois Charton (<a href="mailto:deef@pobox.oleane.com">deef@pobox.oleane.com</a>).<br>
+   Wrote the Paradise graphics driver, and improved the VGA palette setting 
+   code.
+
+   Garret Thomson (<a href="mailto:gart@terraport.net">gart@terraport.net</a>,
+   <a href="http://www.cybertheque.com/galerie/garret/">http://www.cybertheque.com/galerie/garret/</a>).<br>
+   Wrote the music used in the demo game.
+
+   Grzegorz Ludorowski (<a href="mailto:pajonk@ajax.umcs.lublin.pl">pajonk@ajax.umcs.lublin.pl</a>,
+   <a href="http://ajax.umcs.lublin.pl/~pajonk/">http://ajax.umcs.lublin.pl/~pajonk/</a>).<br>
+   Wrote several of the example programs.
+
+   Haruhiko Okumura, 12-2-404 Green Heights, 580 Nagasawa, Yokosuka 239, JP.<br>
+   This guy wrote the original version of the LZSS compression code.
+
+   Jonathan Tarbox (<a href="mailto:battle.axe@pegasuz.com">battle.axe@pegasuz.com</a>,
+   <a href="http://www.pegasuz.com/binky/">http://www.pegasuz.com/binky/</a>).<br>
+   Wrote the mode-X setup code, the FLI/FLC player, and contributed parts of 
+   the joystick handler.
+
+   Marcel de Kogel (<a href="mailto:m.dekogel@student.utwente.nl">m.dekogel@student.utwente.nl</a>).<br>
+   Not content with fixing my broken MPU-401 driver, Marcel went on to 
+   provide a set of vastly improved drum sounds for the OPL driver, to help 
+   me sort out some problems with reentrant interrupts, to supply the half 
+   of the joystick code that didn't come from Jonathan, and to locate a 
+   stupid mistake in my VESA linear framebuffer code.
+
+   Mark Habersack (<a href="mailto:grendel@ananke.amu.edu.pl">grendel@ananke.amu.edu.pl</a>,
+   <a href="http://ananke.amu.edu.pl/~grendel/index.html">http://ananke.amu.edu.pl/~grendel/index.html</a>).<br>
+   Added support for the more recent Trident chipsets.
+
+   Mark Wodrich (<a href="mailto:mwodric@eleceng.uct.ac.za">mwodric@eleceng.uct.ac.za</a>).<br>
+   The brain behind sub-bitmaps, flicker-free mouse pointers, and the 
+   ability to import GRX .FNT files into the grabber.
+
+   Markus F.X.J. Oberhumer (<a href="mailto:markus.oberhumer@jk.uni-linz.ac.at">markus.oberhumer@jk.uni-linz.ac.at</a>).<br>
+   Fixed the Video-7 scrolling function, optimised the color mapping 
+   routines, and made many useful suggestions like the addition of a 
+   vid_phys_base field to the graphics driver structure.
+
+   Matthew Bowie (<a href="mailto:catcat@nmt.edu">catcat@nmt.edu</a>).<br>
+   Added support for 4-button joysticks.
+
+   Nathan Albury, aka Rubicant (<a href="mailto:gt4558a@prism.gatech.edu">gt4558a@prism.gatech.edu</a>,
+   <a href="http://www.prism.gatech.edu/~gt4558a/">http://www.prism.gatech.edu/~gt4558a/</a>).<br>
+   Improved the fire routine in examples/ex11.c (my original version didn't 
+   really look very much like flames :-) and gave me some extremely useful 
+   ideas about how to implement translucency.
+
+   Owen Embury (<a href="mailto:owen@gememail.demon.co.uk">owen@gememail.demon.co.uk</a>).<br>
+   Wrote part of the translucency/lighting code.
+
+   Paul Furber (<a href="mailto:paul@sprintlink.co.za">paul@sprintlink.co.za</a>).<br>
+   Provided the floating point apply_matrix_f() function.
+
+   Peter Monks (<a href="mailto:Peter_Monks@australia.notes.pw.com">Peter_Monks@australia.notes.pw.com</a>).<br>
+   Wrote the Video-7 graphics driver, and showed me how to set up the 
+   unchained 640x400 mode.
+
+   Salvador Eduardo Tropea (<a href="mailto:salvador@inti.edu.ar">salvador@inti.edu.ar</a>).<br>
+   Improved the keyboard routines (better handling of extended scancodes, 
+   keyboard LED support, capslock and numlock, and alt+numpad input).
+
+   Seymour Shlien (<a href="mailto:seymour@dgbt.doc.ca">seymour@dgbt.doc.ca</a>).<br>
+   Contributed the Windows BMP file reader and bezier spline drawer.
+
+   TBD/FeR (<a href="mailto:tbd@usa.net">tbd@usa.net</a>,
+   <a href="http://www.sorostm.ro/nhv/">http://www.sorostm.ro/nhv/</a>).<br>
+   Added the 320x600 and 360x600 resolutions to the mode-X driver.
+
+   Tim Gunn (<a href="timgunn@eastwind.com.au">timgunn@eastwind.com.au</a>).<br>
+   Wrote the TGA reading/writing routines.
+
+   Tom Novelli (<a href="mailto:tnovelli@cyber3.servtech.com">tnovelli@cyber3.servtech.com</a>).<br>
+   Wrote the digital MIDI driver.
+
+
+
+@heading
+Thanks!
+
+   First, a big thank you to all the people who helped me test and debug 
+   this code. It sometimes gets frustrating to receive hundreds of messages 
+   saying "it doesn't work!", but they are useful all the same...
+
+   Andre Baresel (<a href="mailto:baresel@informatik.hu-berlin.de">baresel@informatik.hu-berlin.de</a>),
+   and Craig Jackson (<a href="mailto:Craig.Jackson@launchpad.unc.edu">Craig.Jackson@launchpad.unc.edu</a>),
+   provided a tremendous amount of information about SB hardware.
+
+   Charles Sandmann (<a href="mailto:sandmann@clio.rice.edu">sandmann@clio.rice.edu</a>),
+   DJ Delorie (<a href="mailto:dj@delorie.com">dj@delorie.com</a>),
+   Eli Zaretskii (<a href="mailto:eliz@is.elta.co.il">eliz@is.elta.co.il</a>),
+   and everyone else who has contributed to djgpp. I love it.
+
+   C. Schwerdtfeger (<a href="mailto:schwerdt@physics.ubc.ca">schwerdt@physics.ubc.ca</a>),
+   for his help (and enourmous patience!) in getting the SB Pro-I MIDI 
+   driver to work.
+
+   Finn Thoegersen, Nordbanevej 3 C, DK-7800 Skive, Denmark.<br>
+   Most of my SVGA hardware information came from his VGADOC package.
+
+   Eric Jorgensen (<a href="mailto:smeagol@rt66.com">smeagol@rt66.com</a>).<br>
+   Varmint's Audio Tools (VAT) gave me many useful ideas about how to play 
+   MIDI files.
+
+   Jean-Paul Mikkers (<a href="mailto:mikmak@stack.urc.tue.nl">mikmak@stack.urc.tue.nl</a>).<br>
+   MikMod was the source of a lot of information about programming the SB, 
+   and also gave me the idea of dynamically reprogramming the PIT to get a 
+   really high resolution timer.
+
+   Joel H. Hunter (<a href="mailto:jhunter@kendaco.telebyte.com">jhunter@kendaco.telebyte.com</a>).<br>
+   His SB library for djgpp is excellent, and helped me a lot.
+
+   John Pollard (<a href="mailto:74723.1626@compuserve.com">74723.1626@compuserve.com</a>).<br>
+   The FM instrument definitions are based on his MID-KIT library.
+
+   Kendall Bennett and all the other cool people at SciTech Software.<br>
+   These guys gave the world UniVBE, the VBE/AF API, and a lot of free 
+   information and example VESA code. Plus they very kindly sent me a copy 
+   of the VBE/AF spec when I wanted one.
+
+   Kris Heidenstrom (<a href="mailto:kheidens@actrix.gen.nz">kheidens@actrix.gen.nz</a>).<br>
+   His PC timing FAQ was a big help.
+
+   Mark Feldman.<br>
+   It goes without saying that the PCGPE was an invaluable resource.
+
+   Michael Abrash.<br>
+   You just gotta love that man...
+
+   Paul Fenwick (<a href="mailto:bg914@freenet.carleton.ca">bg914@freenet.carleton.ca</a>).<br>
+   Various bits of the mode-X code (notably the split screen stuff) came 
+   from his XLIBDJ library.
+
+   Robert Schmidt (<a href="mailto:robert@stud.unit.no">robert@stud.unit.no</a>).<br>
+   The register values for the 400x* mode-X resolutions came from his TWEAK 
+   program.
+
+   Vladimir Arnost (<a href="mailto:xarnos00@dcse.fee.vutbr.cz">xarnos00@dcse.fee.vutbr.cz</a>).<br>
+   Provided hardware specs for the OPL3 chip.
+
+   Pink Floyd, the Doors, Tori Amos, Frank Zappa (a recent discovery without 
+   whom I would never have got v2.2 finished :-) and all the other great 
+   musicians who provide me with things to listen to while I am programming.
+
+   My parents, John and Nancy.<br>
+   I would never have made it through all those late night coding sessions 
+   without the cafetiere they gave me last Christmas :-)

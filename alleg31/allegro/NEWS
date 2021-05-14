@@ -1,0 +1,336 @@
+
+============================================================
+============ Changes from 3.0 to 3.1 (Jan 1999) ============
+============================================================
+
+   Changes between the 3.1 beta and final releases: assorted bugfixes, 
+   Antoine Mathys added a Swiss keyboard mapping, Thomas Wolf added a German 
+   translation of the system messages.
+
+   Changes between the 3.1 alpha and beta releases: assorted bugfixes, FLIC 
+   routines can now read from datafiles, included rotation optimisations by 
+   Ivan Baldo.
+
+   Peter Cech added support for hot-swapping between a custom keyboard 
+   layout and the standard US mapping.
+
+   Neil Townsend improved the accuracy of the timer routines.
+
+   Added an ex40 example program, showing one way to do colored lighting 
+   effects in a hicolor mode (and also because it makes the total number of 
+   examples a nice round number :-)
+
+   Added an afinfo test program, which does the same thing as vesainfo but 
+   for VBE/AF drivers.
+
+   Michael Bukin made a lot more portability patches and some bug fixes, 
+   including some improvements to the FLIC player and a much more rational 
+   filename handling system.
+
+   Removed the chipset-specific SVGA hardware drivers from the main library 
+   distribution. Instead, these will now be available both as an optional 
+   addon package, and reformatted as part of the FreeBE/AF project.
+
+   Added FreeBE/AF extensions support to the Allegro VBE/AF driver (farptr 
+   access to video memory, and the libc and pmode exports needed for future 
+   compatibility with the SciTech Nucleus drivers).
+
+   Fixed a bug with the patterned and translucent vline() function in 15 bit 
+   color depths.
+
+   Fixed a NULL pointer dereference bug in the config routines.
+
+   Fixed an order of processing bug that was causing data to be lost when 
+   calling set_config_file() with the same filename as the current config.
+
+   Stepan Roh added a Czech translation of the system messages.
+
+   Ole Laursen added a Danish translation of the system messages.
+
+   Grzegorz Ludorowski made a new demo game intro animation.
+
+   Calin Andrian added 3d polygon timing routines to test.exe.
+
+   Peter Cech added grabber support for the 8x8 BIOS font format.
+
+   Stepan Roh added a Czech keyboard mapping.
+
+   Renamed the Spanish language translation file from SP to ES.
+
+   Calin Andrian added a complete set of truecolor polygon rendering 
+   routines, with support for MMX and 3DNow! optimisations and a new masked 
+   lit drawing mode, along with a new polygon clipping function. One minor 
+   change is that POLYTYPE_FLAT mode is now implemented by calling hline(), 
+   so it will respond to the current drawing_mode() settings.
+
+   Changed the graphics/sound/joystick driver ID numbers from a zero based 
+   list to a descriptive 4-character string, to make them more readable and 
+   flexible. Added config functions to read/write data in this format. The 
+   sound config data is backwardly compatible, but you will need to manually 
+   update any graphics or joystick driver numbers that are stored in your 
+   config files.
+
+   Michael Bukin contributed a _lot_ of patches to improve the portability 
+   and robustness of pretty much the entire library. The only externally 
+   visible change is that the macros used for declaring hardware driver 
+   lists have been redesigned to use a more portable syntax, although the 
+   old syntax is still available as a compatibility macro.
+
+   Burton Radons did some more optimisation of the truecolor pixel blending 
+   functions.
+
+   Martijn Versteegh added a hook mechanism for extending the config file 
+   system, which can be used to provide extended system status information 
+   or customisation routines for addon packages.
+
+   Redesigned the grabber and dat utilities to support source-code "plugin" 
+   modules, which can be used to extend the system with additional object 
+   types, import/export routines, and menu commands.
+
+   Ivan Baldo added a dithering option to the 15/16 bit color conversion 
+   routines.
+
+   Kerry High added a SNES joypad driver.
+
+   Added a font override to the d_text_proc() and d_ctext_proc() GUI 
+   objects, using the dp2 field to specify a custom font.
+
+   Michael Tanczos fixed some bugs in the FLIC player.
+
+   Cloud Wu optimised the truecolor pixel blending functions.
+
+   Disk91 added a French translation of the system error messages.
+
+   Grzegorz Adam Hankiewicz added a Spanish translation of the system error 
+   messages, and added a new (but undocumented :-) command line option to 
+   the demo game.
+
+   Fixed clicks in the interpolated sample mixing.
+
+   Fixed a bug with position_mouse() not updating the mouse_pos variable.
+
+   Fixed a bug in mode-X horizontal scrolling while the timer retrace 
+   simulator is active.
+
+   Added a language.dat file, which can be used to provide translated 
+   versions of system strings (eg. error messages), in a similar way to the 
+   existing keyboard.dat. If you want to use this mechanism from your own 
+   code, replace all your constant strings with calls to 
+   get_config_text("string"). This allows them to be translated by including 
+   a line of the form "string=foreignstring" in the relevant section of 
+   language.dat.
+
+   Added an ASCII name field to the keyboard mapping files, in order to make 
+   the setup program a bit more friendly.
+
+   Increased the maximum number of sound channels from 32 to 64.
+
+   Modified the DIGMID patch loader to support 16 bit samples, rather than 
+   just reducing everything to 8 bit.
+
+   Added an interpolation option to the sample mixer (quality=2).
+
+   Salvador Eduardo Tropea added support for proper 16 bit sample mixing 
+   (quality=1).
+
+   Lee Killough added a lower level hook routine to the keyboard handler.
+
+   Removed floating point code from the DIGMID driver, to avoid potential 
+   FPU stack overflows.
+
+   Jim Flynn removed floating point calculations from the AWE32 MIDI driver 
+   (these could sometimes cause stack overflows).
+
+   Salvador Eduardo Tropea improved the datafile system to avoid linking of 
+   unused code.
+
+   Romano Signorelli contributed a Bresenham arc plotting function.
+
+   Thomas Wolf corrected some errors in the German keyboard mapping file.
+
+   Grzegorz Adam Hankiewicz improved the ex39 example program.
+
+   Sven Sandberg optimised the fixed point trig routines.
+
+   Fixed some silly crash bugs in the joystick code.
+
+   Added a "compress" target to the makefile, based on a suggestion 
+   by Grzegorz Adam Hankiewicz.
+
+   Added dummy bitmap acquire/release functions to allegro.h, for 
+   compatibility with the Windows version.
+
+   Added a cross-reference facility to the Info format documentation.
+
+   Martin Fuller fixed an obscure bug in the reading of compressed .bmp 
+   files.
+
+   The emergency exit signal handler now correctly restores the previous 
+   handler, rather than resetting to the default action.
+
+   Sven Sandberg optimised the create_light_table() function.
+
+   George Foot fixed a bug when the get_mouse_mickeys() routine was called 
+   with both parameters pointing to the same value.
+
+   Changed the licensing terms from "swapware" to "giftware". See the 
+   Allegro website for an explanation of the reasons for this change.
+
+   Added yet more overloaded operators (this time for long and double types) 
+   to the fix class.
+
+   Marius Fodor added support for the Sidewinder and Gravis GamePad Pro. 
+   Many apologies for my taking so long to merge in this code!
+
+   Stefan Schimanski optimised the reverse blitting routine (for overlapping 
+   images).
+
+   Added a shift+tab reverse focus movement key to the GUI routines.
+
+   Grzegorz Hankiewicz added a new example showing how to create and use a 
+   custom color mapping table.
+
+   Totally revamped the joystick system (better API and new driver 
+   structure).
+
+   Modified the fix class to work properly with gcc 2.8.0.
+
+   Added a help.txt "how to get tech support" file.
+
+   The midi_pos variable is now negated, rather than cleared to -1, at the 
+   end of a MIDI file. This can be used for measuring the length of a file.
+
+   Added a rendering hook to the font structure, for use by text addon 
+   packages.
+
+   Improved the VBE/AF text output routine.
+
+   Corrected an error in the way the VBE/AF driver interprets hardware 
+   cursor colors.
+
+   Pedro Cardoso contributed a tweaked 80x80 VGA mode.
+
+   The VBE/AF driver now supports dumb framebuffer drivers as well as 
+   accelerated ones.
+
+   Added more accelerator support to the VBE/AF driver (hardware cursors, 
+   lines, vertical lines, triangles, fixed width text output, and 
+   opaque/masked blitting from system memory to the screen).
+
+   Added a scare_mouse() function, based on ideas by Martijn Versteegh.
+
+   The grabber now stores the "grab from grid" dialog state in allegro.cfg.
+
+   Sven Sandberg fixed a problem with save_bitmap() widths being rounded 
+   upwards.
+
+   Made the _timer_installed flag globally visible.
+
+   Ove Kaaven added linear framebuffer support to the native mach64 driver.
+
+   Erik Sandberg optimised the 8 bit draw_sprite() and draw_trans_sprite() 
+   functions.
+
+   Michal Mertl fixed a memory leak in the generate_optimized_palette() 
+   function.
+
+   Added an ALLEGRO_DATE version define to allegro.h.
+
+   Michael Bukin optimised the line drawing routine and fixed problem with 
+   the inline asm constraints for fadd()/fsub().
+
+   Fixed potential problems caused by a lag between the mouse state 
+   variables changing and the pointer being redrawn.
+
+   Michal Mertl optimised the clipping code for lines, rectangles, and 
+   circles.
+
+   Maiolino Carmelo contributed an Italian keyboard mapping.
+
+   Fixed lockup problems caused by the keyboard LED functions on some 
+   platforms/hardware.
+
+   Added new create_video_bitmap() and show_video_bitmap() functions.
+
+   Added a profile option to the test program.
+
+   The keyboard handler now correctly updates the BIOS state for the right 
+   control and alt keys when it shuts down.
+
+   Fixed a problem that was preventing the DIGMID driver from reading patch 
+   sets stored in executable appended datafiles.
+
+   Changed the default sample priority from 255 to 128.
+
+   Fixed some problems with virtual screen sizes in the VBE/AF driver.
+
+   Added two new example programs.
+
+   The VBE/AF driver now has full support for hardware accelerated drawing.
+
+   Added VBE 3.0 support, including new triple buffering routines.
+
+   Wrote a routine to select the sound input source (microphone, line input 
+   or CD audio).
+
+   Added proper support for stereo samples. This requires an extra parameter 
+   to the play_audio_stream() function, so you will need to change any 
+   programs that use this. I'm very sorry for breaking your old code!
+
+   Fixed bugs with the SB16 autodetection and 16 bit sample recording.
+
+   Added input support to the raw SB MIDI interface driver.
+
+   Wrote a new test program to demonstrate the audio input features.
+
+   Ove Kaaven added support for MIDI and audio (sampled sound) input.
+
+   The pack_fopen() function now understands nested datafiles as directory 
+   structures, using filenames like "graphics.dat#level1/sprites/zdurgle".
+
+   Charles Mac Donald showed me how to set a 160x120 VGA mode, and more 
+   reliable 400x* mode-X resolutions.
+
+   Guilherme Silveira and Theuzifan Sumachingun both independently modified 
+   the file selector to only list valid drive letters.
+
+   Carsten Sorensen added a driver for the ESS AudioDrive soundcard.
+
+   Przemek Podsiadly added hicolor versions of the 3d polygon routines.
+
+   Ove Kaaven added truecolor support to the native ATI mach64 driver.
+
+   Patrick Hogan added a draw_gouraud_sprite() function.
+
+   Ben Chauveau added a driver for Tseng ET6000 cards.
+
+   Marco Campinoti added truecolor support to the native Tseng ET4000 driver.
+
+   Marco Marmulla added 16 bit support to the load_voc() routine.
+
+   Added Danish, Swedish, and Norwegian keyboard mappings.
+
+   Added GUI hook functions for scaling or offsetting the mouse position.
+
+   Fixed bug which was causing a lockup when calling set_leds(-1).
+
+   Michael Bevin optimised the create_trans_table() function.
+
+   It is now possible to display a mouse pointer without the mouse handler 
+   needing to be installed.
+
+   Added a create_sample() function.
+
+   Made the _blender_map pixel blending functions and the _mouse_installed, 
+   _keyboard_installed, and _sound_installed flags globally visible.
+
+   Added an 8-button joystick mode.
+
+   Chris La Mantia fixed a minor visual problem with the d_icon_proc().
+
+   Added a Rich Text Format (.rtf) version of the documentation.
+
+   Added postfix increment and decrement operators to the C++ fix class, and 
+   the unary negation operator is now const-correct.
+
+

@@ -1,0 +1,116 @@
+		___  _ _                        _____ ___   ___ 
+	       / _ \| | | ___  __ _ _ __ ___   |  ___/ _ \ / _ \ 
+	      | |_| | | |/ _ \/ _` | '__/ _ \  | |_ | |_| | | | |
+	      |  _  | | |  __/ (_| | | | (_) | |  _||  _  | |_| |
+	      |_| |_|_|_|\___|\__, |_|  \___/  |_|  |_| |_|\__\_\
+			      |___/ 
+
+
+
+   What is Allegro?
+
+	 See readme.txt.
+
+
+   Where can I get it?
+
+      From any SimTel mirror, in the directory gnu/djgpp/v2tk/, or from 
+      ftp://x2ftp.oulu.fi/pub/msdos/programming/djgpp2/, or from the Allegro 
+      homepage, http://www.talula.demon.co.uk/allegro/.
+
+
+   How do I use it?
+
+      See allegro.txt.
+
+
+   I'm confused by the installation instructions in readme.txt. What is this 
+   make.exe program I'm supposed to run?
+
+      Make is part of the standard djgpp distribution, in v2gnu/mak*b.zip 
+      (whatever the latest version number is). You should get this from 
+      wherever you got djgpp.
+
+
+   When I run make, it says "src/allegro.c:22: stdlib.h: No such file or 
+   directory (ENOENT)".
+
+      This sounds like a problem with your djgpp installation. Have you got 
+      the DJGPP environment variable set properly? If not, go read Eli's 
+      excellent djgpp FAQ.
+
+
+   When I run make, it says "make.exe: *** No rule to make target 
+   `src/internal.h', needed by `obj/djgpp/allegro.o'. Stop.".
+
+      Did you use pkunzip to install Allegro? If so, I suspect you forgot 
+      the -d switch, which is needed to preserve the directory structure.
+
+
+   When I run make, it says "setup/setup.cc:1: iostream.h: No such file or 
+   directory (ENOENT)".
+
+      You haven't installed the djgpp C++ library, which is needed by the 
+      Allegro sound setup program. Download lgp*b.zip (whatever the latest 
+      version number is), and install it as you did the rest of djgpp.
+
+
+   When I run make, it says:
+   src/sb.c: In function `sb_interrupt':
+   src/sb.c:371: too few arguments to function `_mix_some_samples'
+
+      You've unzipped a recent version of Allegro on top of an older 
+      release, and some outdated files have been left behind. Delete the old 
+      version, and reinstall into an empty directory.
+
+
+   Even though I included allegro.h, when I try to compile a program using 
+   Allegro, I get lots of errors like:
+   C:\TEMP\ccdaaaaa(.text+0x9):x.c: undefined reference to `allegro_init'
+   C:\TEMP\ccdaaaaa(.text+0xe):x.c: undefined reference to `install_keyboard'
+
+      You haven't read the docs properly, have you? :-) You need to link 
+      your program with the library file, liballeg.a. First, make sure you 
+      have installed everything properly (running make should do this for 
+      you). Second, if you are compiling from the command prompt or with a 
+      makefile, add -lalleg to the end of your gcc command line, or if you 
+      are using Rhide, go to the Options/Libraries menu, type 'alleg' into 
+      the first empty field, and make sure the box next to it is checked.
+
+
+   How can I extend the 256k limit on Mode-X video memory? I have two megs 
+   in my card.
+
+      You can't. The limit is imposed by the VGA hardware, not by Allegro. 
+      To access more than 256k of video memory you need to use an SVGA mode, 
+      which means either switching to a higher resolution or getting a copy 
+      of UniVBE, which provides several low resolution SVGA modes.
+
+
+   Why doesn't Allegro support MOD tracker music?
+
+      Because this doesn't integrate very well with the existing MIDI 
+      routines, and because MikMod already does a better job of playing MODs 
+      than anything I could write. If you want to use MikMod together with 
+      Allegro, get MikAlleg.
+
+
+   Where can I find example source code for programs written with Allegro?
+
+      Check the Allegro home page, http://www.talula.demon.co.uk/allegro/. 
+      If you have anything to add to this, please send me the URL!
+
+
+   Why is it considered good coding practice to define PI as a constant, 
+   rather than just using the value 3.141592 in my code?
+
+      It simplifies the maintenance of your program, in case the value of PI 
+      ever needs to be changed.
+
+
+   I'm still confused. Where can I get help?
+
+      Either mail me (shawn@talula.demon.co.uk), or ask on the djgpp 
+      newsgroup, comp.os.msdos.djgpp.
+
+

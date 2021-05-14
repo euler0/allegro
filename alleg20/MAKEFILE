@@ -1,0 +1,39 @@
+#   DJGPP makefile for Allegro
+
+FLAGS = -MMD -Wall -m486 -O3
+
+OBJS = adlib.o allegro.o bank.o blit.o cirrus.o datafile.o dma.o file.o \
+       graphics.o gui.o gus.o irq.o irqwrap.o joystick.o keyboard.o math.o \
+       midi.o misc.o mouse.o mpu.o sb.o s3.o sound.o sprite.o timer.o \
+       tseng.o vesa.o vga.o
+
+all : asmdef.h liballeg.a cp.o cp.exe demo.o demo.exe grabber.o grabber.exe \
+      mathtest.o mathtest.exe play.o play.exe test.o test.exe
+
+%.o : %.c
+	gcc $(FLAGS) -c $< -o $@
+
+%.o : %.S asmdef.h
+	gcc $(FLAGS) -c $< -o $@
+
+%.exe : %.o liballeg.a
+	gcc -s -o $@ $< liballeg.a
+
+liballeg.a : $(OBJS)
+	ar rs liballeg.a $(OBJS)
+
+asmdef.h : asmdef.exe
+	asmdef.exe
+
+asmdef.exe : asmdef.c allegro.h internal.h
+	gcc -Wall -s -o asmdef.exe asmdef.c
+
+clean :
+	del *.o
+	del *.d
+	del asmdef.exe
+
+DEPS := $(wildcard *.d)
+ifneq ($(DEPS),)
+include $(DEPS)
+endif

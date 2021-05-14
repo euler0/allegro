@@ -1,0 +1,830 @@
+
+		//  /     /     ,----  ,----.  ,----.  ,----.
+	      / /  /     /     /      /    /  /    /  /    /
+	    /  /  /     /     /___   /       /____/  /    /
+	  /---/  /     /     /      /  __   /\      /    /
+	/    /  /     /     /      /    /  /  \    /    /
+      /     /  /____ /____ /____  /____/  /    \  /____/
+
+
+      A mode 13h game programming library for Borland C and djgpp.
+      Version 1.0, 1994/95.
+
+
+This file describes the functions contained in Allegro, and how to use 
+them in your programs. See grabber.txt for instructions on using the 
+grabber utility, and readme.txt for information about compiling the library.
+
+By Shawn Hargreaves,
+1 Salisbury Road,
+Market Drayton,
+Shropshire,
+England TF9 1AJ
+email slh100@tower.york.ac.uk (until 1996)
+
+
+
+**************************************
+************ Introduction ************
+**************************************
+
+Q: Does the world really need another mode 13h library?
+A: No, absolutely not.
+
+But I have written this for my own use (both as a learning exercise and 
+because I don't like relying on prepackaged libraries), and I think it 
+contains enough useful things to be worth distributing. Also, there isn't 
+a lot of information around about using djgpp for games, so helpfully this 
+will help to fill that gap.
+
+Allegro is a collection of low level routines for use in computer games. 
+Once upon a time I had an Atari ST, and Allegro began life on that, hence 
+the acronym "Atari Low Level Game Routines". Then I started programming 
+on the PC and I rewrote Allegro with Borland C, intending to use it 
+for cross-platform game development. After finishing the Borland version I 
+saved up and bought myself a lovely new PC and decided to make a 32-bit 
+pmode version with DJ Delorie's wonderful compiler, djgpp. This distracted 
+me so much that the Atari library is not (and now probably never will be) 
+finished, and Allegro-PC has become totally incompatible with the Atari 
+version in any case. This means that the acronym is no longer totally 
+appropriate, but I can't think of anything else that it could stand for 
+and I am not going to change it now.
+
+Allegro features:
+
+   Mode 13h graphics routines: putpixel, getpixel, lines, rectangles, 
+   triangles, circles, text output, pallete manipulation, sprites (both 
+   solid and masked), and blits. All of these support clipping, and can 
+   draw to the screen or to memory bitmaps of any size.
+
+   Easy access to the mouse, keyboard and 5 millisecond second timer 
+   interrupts.
+
+   File access, including LZSS data compression and support for 
+   multi-object data files with an editor utility.
+
+   Fixed point 16.16 arithmetic, including lookup-table trig.
+
+   Simple GUI dialog manager and file selector.
+
+
+Allegro is swap-ware. You may use, modify, redistribute, and generally 
+hack it about in any way you like, but if you do, you must send me 
+something that you have written. This could be a complete game, a 
+routine that you think I might like, an improved version of one of 
+the Allegro functions, a bugfix (hopefully there won't be too many of 
+these!), or just a copy of your autoexec.bat if you don't have anything 
+better. If you redistribute parts of Allegro or make a game using it, it 
+would be nice if you mentioned me somewhere in the credits, but if 
+you just want to pinch a few routines that is OK too. I'll trust you not 
+to rip me off.
+
+#include <std_disclaimer>
+
+   "I do not accept responsibility for any effects, adverse or otherwise, 
+    that this code may have on you, your computer, your sanity, your dog, 
+    and anything else that you can think of, including the political 
+    situation in Taiwan. Use it at your own risk."
+
+
+
+***********************************************************
+************ Allegro functions and definitions ************
+***********************************************************
+
+All Allegro functions and data structures are defined in allegro.h.
+
+TRUE, FALSE:
+   Logic constants: FALSE = 0, TRUE = -1.
+
+NULL:
+   Null pointer.
+
+MIN(x,y)
+MAX(x,y)
+   Macros to find the larger or smaller of two numbers.
+
+MID(x,y,z)
+   Provided that z is larger than x, returns the middle of three numbers.
+
+ABS(x)
+   Find absolute value of a number.
+
+SGN(x)
+   Checks the sign of a number, returning 1 or -1.
+
+SCREEN_W = 320
+SCREEN_H = 200
+   Width and height of the Allegro screen.
+
+void allegro_init();
+   Initialises the Allegro system. You should call this during your
+   program startup code. This puts the display into mode 13h.
+
+void allegro_exit();
+   Closes down the Allegro system. This includes restoring the initial
+   pallete, and removing any mouse or keyboard handlers and interrupt
+   routines that have been installed.
+
+extern short allegro_use_timer;
+   If you set this to FALSE before calling allegro_init(), Allegro will not 
+   take over the timer interrupt, so any timer routines of your own will 
+   still work.
+
+void install_mouse();
+void remove_mouse();
+   Set up or remove the Allegro mouse interrupt handler. You must call 
+   install_mouse() before trying to access mouse input, but you do not 
+   need to call remove_mouse() because allegro_exit() will do this for you.
+
+volatile short mouse_x;
+volatile short mouse_y;
+volatile short mouse_b;
+   Global variables containing the current mouse position and button
+   state.
+
+void (*mouse_callback)();
+   Global pointer to a function which Allegro will call whenever the
+   mouse flags change, to allow you to perform any required actions
+   (for instance displaying a mouse pointer). This will not be called
+   if it set to NULL.
+
+SPRITE *mouse_sprite;
+   Global pointer to the sprite which is used by show_mouse(). You can
+   alter this to point to a sprite of your own, which should be sized 16x16.
+
+void show_mouse (BITMAP *bmp);
+   Tells Allegro to display a mouse pointer, and use the mouse_callback()
+   function to update it whenever the mouse is moved. You should only use
+   this routine when you have not installed a mouse_callback() function of
+   your own. The mouse pointer will be drawn onto the bitmap bmp, which
+   should normally be the hardware screen. To turn the mouse pointer off,
+   which you must do whenever you draw onto the bitmap, call 
+   show_mouse(NULL);
+
+short install_int (void (*proc)(), short speed);
+   Installs the function proc into the list of timer interrupt routines.
+   This function will be executed once every speed milliseconds, but note
+   that the speed will be truncated to the nearest 5 milliseconds. Returns 
+   a negative number if there was no room to add a new routine (there is 
+   only room for eight). Note that your function is called by the Allegro 
+   interrupt handler and not directly by the processor, so you should 
+   return normally rather than using an IRET. Your interrupt routine must 
+   finish quickly, and you should not use large amounts of stack or make 
+   any calls to the operating system. Under djgpp, the stack segment and 
+   data segment do not always seem to be the same during interrupt 
+   processing, so be careful when manipulating the addresses of local 
+   variables.
+
+short remove_int (void (*proc)());
+   Removes a function from the list of interrupt routines. At program
+   termination, allegro_exit() does this automatically.
+
+TICKS_PER_SECOND = 200
+   Constant defined to be the number of timer ticks per second.
+
+void rest (long time);
+   Waits for time milliseconds before returning. Accurate to the nearest
+   five milliseconds.
+
+void install_keyboard();
+void remove_keyboard();
+   Installs or removes Allegro's own keyboard handler. You must call 
+   install_keyboard() before using any of the keyboard input routines, but 
+   you do not need to call remove_keyboard() because allegro_exit() will 
+   do this for you. Note that Allegro completely takes over the keyboard, 
+   so the gnu debugger will not work properly, and under DOS even 
+   ctrl-alt-del will have no effect.
+
+volatile char key[128];
+   Array of flags indicating the state of each key, in scancode order
+   (ignoring extended keycode messages). The scancodes are defined in
+   allegro.h as a series of KEY_* constants.
+
+After calling install_keyboard() the DOS keyboard reading functions will
+no longer work. Allegro replaces them with its own keyboard buffering
+system, and provides the functions:
+
+long readkey();
+   Returns the next character code from the keyboard buffer. If the
+   buffer is empty, it waits until a key is pressed. The low byte of
+   the return value contains the ascii code of the key, and the high
+   byte the scan code, but the ascii conversion ignores the state of the 
+   ctrl and alt keys.
+
+short keypressed();
+   Returns TRUE if there are keypresses waiting in the keyboard buffer.
+
+void clear_keybuf();
+   Clears the keyboard buffer.
+
+
+
+*****************************************************
+************ Bitmap and pallete routines ************
+*****************************************************
+
+For easy manipulation of colors, the type RGB is defined as a structure
+which stores the three color values (each ranging 0-255) as:
+
+struct {
+   unsigned char r, g, b;
+} RGB;
+
+The type _RGB is a structure which stores colors in the three byte format 
+used by the display hardware. To convert between RGB and _RGB structures, 
+use the functions:
+
+_RGB rgbtopal (RGB color);    / converts an RGB structure to an _RGB
+RGB paltorgb (_RGB color);    / converts an _RGB to an RGB structure
+
+PAL_SIZE = 256
+   Number of colors in the pallete.
+
+Allegro defines the type PALLETE to be an array of PAL_SIZE of the _RGB 
+structures.
+
+void set_pallete (PALLETE p);
+   Sets the color pallete.
+
+void get_pallete (PALLETE p);
+   Sets p to the current color pallete.
+
+void fade_in (PALLETE p, short speed);
+void fade_out (short speed);
+   These routines manipulate the pallete to produce a fade effect.
+   fade_in() goes gradually from a black screen to the specified pallete, 
+   and fade_out() goes from the current pallete to solid black. Speed is 
+   from 1 (the slowest) up to 64 (instant).
+
+PALLETE black_pallete;
+   Solid black color pallete, used by the fade routines.
+
+PALLETE desktop_pallete;
+   The pallete used by the Atari ST low resolution desktop.
+
+void vsync();
+   Wait for a vertical retrace to begin. You do not need to call this if
+   you are using the Allegro pallete manipulation functions.
+
+All of Allegro's graphics operations operate on structures called bitmaps.
+A bitmap can be used as a temporary place to draw graphics before blitting
+them to the screen, or you can draw directly to the special 'screen' bitmap.
+
+struct {
+   short w, h;             / width and height in pixels
+   short clip;             / flag if clipping is turned on
+   short cl, cr, ct, cb;   / clip left, right, top and bottom values
+   long size;              / number of bytes occupied by the bitmap
+   char *dat;              / Don't use this! For free() only
+   short seg;              / djgpp only: bitmap segment, 0 = _go32_my_ds()
+   char *line[];           / pointers to the start of each scan line
+} BITMAP;
+
+BITMAP *screen;
+   Global pointer to a bitmap. This is set up by allegro_init(), and 
+   represents the area of memory used by the display hardware. If you are 
+   not doing any double buffering or off-screen drawing, use this bitmap 
+   as the destination for all your graphics operations.
+
+BITMAP *create_bitmap (short width, short height);
+   Creates a new bitmap sized width * height, and returns a pointer to it.
+   Returns NULL if there is not enough memory. With the Borland version, 
+   the size of a bitmap must be less than 64K.
+
+void destroy_bitmap (BITMAP *bitmap);
+   Destroys a bitmap when you are finished with it.
+
+void set_clip (BITMAP *bitmap, short x1, short y1, short x2, short y2);
+   Sets the two opposite corners of the clipping rectangle to be used when
+   drawing to the bitmap. Nothing will be drawn to positions outside of 
+   this rectangle. When a new bitmap is created the clipping rectangle 
+   will be set to the full area of the bitmap. If x1, y1, x2 and y2 are 
+   all zero clipping will be turned off, which will slightly speed up 
+   drawing operations but will allow memory to be corrupted if you attempt 
+   to draw off the edge of the bitmap.
+
+void show (BITMAP *bitmap);
+   Fast blit from the specified bitmap to the screen. The result will be 
+   garbled if the bitmap is not sized 320x200.
+
+void clear (BITMAP *bitmap);
+   Clears the contents of a bitmap. Clipping is ignored.
+
+
+
+******************************************************
+************ Graphics and sprite routines ************
+******************************************************
+
+void blit (BITMAP *source, BITMAP *dest, short source_x, short source_y,
+	   short dest_x, short dest_y, short width, short height);
+   Copies an area of the source bitmap to the destination bitmap. source_x
+   and source_y give the top left corner of the area of the source bitmap
+   to copy, and dest_x and dest_y give the position in the destination
+   bitmap. width and height give the size of the area to blit. This
+   routine respects the clipping rectangle of the destination bitmap, and
+   will work correctly even when the two memory areas overlap (ie. source
+   and dest are the same). 
+
+The following routines draw onto the bitmap which is passed as their first
+argument, and will only draw inside the bitmap's clipping rectangle.
+Drawing is done in the color specified by the last parameter, which is
+an integer in the range 0-255.
+
+void putpixel (BITMAP *bmp, short x, short y, short color);
+   Sets the pixel at x,y to the specified color.
+
+short getpixel (BITMAP *bmp, short x, short y);
+   Returns the color value of the pixel at x,y.
+
+void vline (BITMAP *bmp, short x, short y1, short y2, short color);
+   Draws a vertical line from x,y1 to x,y2. Faster than using line().
+
+void hline (BITMAP *bmp, short x1, short y, short x2, short color);
+   Draws a horizontal line from x1,y to x2,y. Faster than using line().
+
+void line (BITMAP *bmp, short x1, short y1, short x2, short y2, short color);
+   Draws a line from x1,y1 to x2,y2.
+
+void polyline (BITMAP *bmp, short n, short *points, short color);
+   Draws a series of lines linking the points given in the array points.
+   n is the number of points; points[0] is the x coordinate of the first
+   point, points[1] the y coord, points[2] the x coordinate of the second
+   point, etc. points should contain n*2 elements.
+
+triangle (BITMAP *bmp, short x1, y1, x2, y2, x3, y3, short color)
+   Draws a filled triangle between the three points.
+
+void rect (BITMAP *bmp, short x1, short y1, short x2, short y2, short color);
+   Draws the outline of a rectangle.
+
+void rectfill (BITMAP *bmp, short x1, y1, x2, y2, short color);
+   Draws a solid filled rectangle.
+
+void circle (BITMAP *bmp, short x, short y, short radius, short color);
+   Draws the outline of a circle.
+
+void circlefill (BITMAP *bmp, short x, short y, short radius, short color);
+   Draws a filled circle.
+
+Allegro supports text output using user defined 8x8 fonts, which contain
+the ASCII characters 32-126. All other characters will be drawn as spaces.
+
+FONT *font;
+   A simple font (the mode 13h default).
+
+void textmode (short mode);
+   Sets the mode in which text will be output. If mode is positive, text
+   output will be opaque and the background will be set to mode. If mode
+   is negative, text will be drawn transparently (ie. the background will
+   not be altered. The default is a mode of zero.
+
+void textout (BITMAP *bmp, FONT *font, char *str, short x, y, short color);
+   Writes the null terminated string str onto bmp at position x,y using
+   the current text mode and the specified font and foreground color.
+
+A sprite is a bitmapped image which may be either solid (all of the sprite
+is drawn) or masked (zero pixels are not drawn, allowing the background to
+show through).
+
+struct {
+   short flags;         / masked?
+   short w;             / sprite width
+   short h;             / sprite height
+   char dat[];          / sprite data
+} SPRITE;
+
+SPRITE *create_sprite (short flags, short width, short height);
+   Creates a new sprite sized width x height, and returns a pointer to it.
+   The flags parameter contains information about the sprite. Setting the 
+   flag SPRITE_MASKED will cause the sprite to have some transparent 
+   pixels, rather than the default opaque setting. Returns NULL if there 
+   is not enough memory.
+
+void destroy_sprite (SPRITE *sprite);
+   Destroys a sprite which was created by create_sprite().
+
+void get_sprite (SPRITE *sprite, BITMAP *bmp, short x, short y);
+   Copies the bitmap data from position x,y to the sprite. Useful for
+   creating animations, to store the background underneath another sprite.
+   If the sprite is masked, the zero pixels will be treated as hollow and
+   all other colors as solid.
+
+void drawsprite (BITMAP *bmp, SPRITE *sprite, short x, short y);
+   Draws a sprite onto a bitmap, at the specified x and y position,
+   clipping if required.
+
+
+
+***********************************************************
+************ File I/O and compression routines ************
+***********************************************************
+
+char *get_filename (char *path);
+   When passed a completely specified file path, this returns a pointer
+   to the filename portion. Both '\' and '/' are recognized as directory
+   separators.
+
+char *get_extension (char *filename);
+   When passed a complete filename (with or without path information)
+   this returns a pointer to the file extension.
+
+void put_backslash (char *filename);
+   If the last character of the filename is not a '\' or '/', this routine
+   will concatenate a '\' on to it.
+
+short file_exists (char *filename, short attrib, short *aret);
+   Checks whether a file matching the given name and attributes exists,
+   returning non zero if it does. The file attribute may contain any of
+   the bits F_RDONLY (read-only file), F_HIDDEN (hidden file), F_SYSTEM
+   (system file), F_VOLUME (volume label), F_SUBDIR (directory) and F_ARCH
+   (archive). If aret is not null, it will be set to the attributes of
+   the matching file. If an error occurs the system error code will be
+   stored in errno.
+
+long file_size (char *filename);
+   Returns the size of a file, in bytes.
+   If the file does not exist or an error occurs, it will return zero
+   and store the system error code in errno.
+
+short delete_file (char *filename);
+   Removes a file from the disk.
+   Returns zero on success, or an error code.
+
+short for_each_file (char *spec, short attrib,
+		     void (*call_back)(), short param);
+   Finds all the files on the disk which match the given wildcard
+   specification and file attributes, and executes call_back() once for
+   each. call_back() will be passed three arguments, the first a string
+   which contains the completed filename, the second being the attributes
+   of the file, and the third a short which is simply a copy of param (you
+   can use this for whatever you like). If an error occurs an error code
+   will be stored in errno, and call_back() can cause for_each_file() to
+   abort by setting errno itself. Returns the number of successful calls
+   made to call_back(). The file attribute may contain any of the bits
+   F_RDONLY (read-only file), F_HIDDEN (hidden file), F_SYSTEM (system
+   file), F_VOLUME (volume label), F_SUBDIR (directory) and F_ARCH (archive).
+
+The following routines implement a fast buffered file I/O system, based
+on a subset of the stdio syntax. If you do not wish to use these routines,
+#include "stdio.h" in your file before including "allegro.h", and the
+normal stdio file functions will be used instead of these replacements.
+
+These functions support the reading and writing of compressed files,
+using a ring buffer algorithm based on the LZSS compressor by Haruhiko
+Okumura. This does not achieve quite such good compression as programs
+like zip and lha, but unpacking is very fast and it does not require much
+memory. Packed files always begin with the 32 bit value F_PACK_MAGIC, and
+autodetect files with the value F_NOPACK_MAGIC.
+
+FILE *fopen (char *filename, char *mode);
+   Opens a file according to mode, which may contain any of the flags:
+   'r': open file for reading.
+   'w': open file for writing, overwriting any existing data.
+   'p': open file in 'packed' mode. Data will be compressed as it is
+	written to the file, and automatically uncompressed during read
+	operations. Files created in this mode will produce garbage if
+	they are read without this flag being set.
+   '!': open file for writing in normal, unpacked mode, but add the value
+	F_NOPACK_MAGIC to the start of the file, so that it can be opened
+	in packed mode and Allegro will automatically detect that the
+	data does not need to be decompressed.
+   Instead of these flags, one of the constants F_READ, F_WRITE,
+   F_READ_PACKED, F_WRITE_PACKED or F_WRITE_NOPACK may be used as the 
+   second argument to fopen().
+   On success, fopen() returns a pointer to a file structure, and on error
+   it returns NULL and stores an error code in errno. An attempt to read a 
+   normal file in packed mode will cause errno to be set to EDOM.
+
+short fclose (FILE *f);
+   Closes a file after it has been read or written.
+   Returns zero on success. On error it returns an error code which is
+   also stored in errno. This function can fail only when writing to
+   files: if the file was opened in read mode it will always succeed.
+
+short feof (FILE *f);
+   Checks whether there are any more bytes waiting to be read from f,
+   returning non-zero if the end of file has been reached. The file must
+   have been opened in read mode.
+
+short ferror (FILE *f);
+   Checks whether any errors have occurred when reading or writing f,
+   returning non-zero if there have been errors.
+
+short getc (FILE *f);
+short fgetc (FILE *f);
+   Reads a character from a file (which must have been opened in read
+   mode). On EOF it returns EOF, and on error it returns EOF and stores
+   an error code in errno. This is implemented as a macro, which means
+   that it will be much faster if f is a register variable.
+
+short getw (FILE *f);
+long getl (FILE *f);
+   Read a word (16 bits) or a long (32 bits) from a file (which must have
+   been opened in read mode). On EOF or error they return EOF, but since
+   this is a valid return value for these functions you should use feof()
+   and ferror() or check errno instead. These functions use the Motorola
+   byte-ordering system.
+
+short igetw (FILE *f);
+   Version of getw() which uses the intel byte-ordering scheme rather than
+   the Motorola.
+
+short putc (short c, FILE *f);
+short fputc (short c, FILE *f);
+   Writes a character to a file (which must have been opened in write
+   mode). Returns c on success: on error it returns EOF and stores
+   an error code in errno. This is implemented as a macro, which means
+   that it will be much faster if f is a register variable.
+
+short putw (short w, FILE *f);
+long putl (long l, FILE *f);
+   Write a word (16 bits) or a long (32 bits) to a file (which must have
+   been opened in write mode). Return w or l on success: on error they
+   return EOF, but since this is a valid return value you should use
+   ferror() or check errno instead. These functions use the Motorola
+   byte-ordering system.
+
+short iputw (FILE *f);
+   Version of putw() which uses the intel byte-ordering scheme rather than
+   the Motorola.
+
+short fread (char *p, short size, short n, FILE *f);
+   Reads n items of size bytes from f and stores them at memory location p.
+   Returns the number of items read, which will be less than n if EOF
+   is reached or an error occurs. Error codes are stored in errno.
+
+short fwrite (char *p, short size, short n, FILE *f);
+   Writes n items of size bytes to the file f from and stores them at
+   memory location p. Returns the number of items written, which will be
+   less than n if an error occurs. Error codes are stored in errno.
+
+long _fread (char *p, long n, FILE *f);
+long _fwrite (char *p, long n, FILE *f);
+   Non-standard versions of fread() and fwrite(), where the size is a
+   single long value specifying the number of bytes to be read or written.
+
+The grabber utility program creates Allegro data files, which can contain
+sprites, bitmaps, palletes, fonts, and any other binary data that you
+import. To load one of these files into memory, call:
+
+DATAFILE *load_datafile (char *filename);
+   Loads a data file into memory, and returns a pointer to it. On error,
+   sets errno and returns NULL.
+
+void unload_datafile (DATAFILE *dat);
+   Removes a data file from memory.
+
+When you load a data file, you will obtain a pointer to an array of 
+structures:
+
+struct {
+   short type;          / type of the data item
+   long size;           / if type = DAT_DATA, size of the data in bytes
+   void *dat;           / pointer to the actual data
+} DATAFILE;
+
+The index of each data structure within the array can be obtained from the
+header file of constants created by the grabber program.
+
+Valid flags for the type field are:
+   DAT_DATA - binary data: dat points to the data
+   DAT_FONT - dat points to the font
+   DAT_BITMAP_16, DAT_BITMAP_256 - dat is a pointer to the bitmap
+   DAT_SPRITE_16, DAT_SPRITE_256 - dat is a pointer to the sprite
+   DAT_PALLETE_16, DAT_PALLETE_256 - dat is a pointer to the pallete
+   DAT_END - special flag for the end of the data list
+
+
+
+***********************************************************
+************ Fixed point (16.16) math routines ************
+***********************************************************
+
+Allegro provides some routines for working with fixed point numbers, and
+defines the type 'fixed' to be a signed long integer. The high word is
+used for the integer part and the low word for the fraction, giving a
+range of -32768 to 32767 and an accuracy of four or five decimal places.
+Fixed point numbers can be assigned, compared, added, subtracted, negated
+and shifted (for multiplying or dividing by powers of two) using normal
+long integer operators, but you should take care to use the appropriate
+conversion routines when mixing fixed point with integer or floating point
+values. Writing 'fixed_point_1 + fixed_point_2' is ok, but
+'fixed_point + int' is not.
+
+To convert fixed point values to and from integer and floating point
+formats, use the macros:
+
+fixed itofix (short x);         / converts an int to fixed point
+short fixtoi (fixed x);         / converts fixed point to integer
+fixed ftofix (float x);         / converts a float to fixed point
+float fixtof (fixed x);         / converts fixed point to a float
+
+A fixed point value can be multiplied or divided by an integer using the
+normal '*' and '/' operators. To multiply or divide two fixed point
+values, however, you must use the functions:
+
+fixed fmul (fixed x, fixed y);      / multiplies two fixed point values
+fixed fdiv (fixed x, fixed y);      / divides two fixed point values
+
+If an overflow occurs, errno will be set to ERANGE, but it is not cleared
+if the operation is successful. This means that if you are going to test
+for overflow you should set errno=0 before calling fmul() or fdiv().
+
+With djgpp, division by zero interrupts are trapped and are handled by 
+setting errno to ERANGE and returning the maximum possible value. This can 
+be disabled by calling remove_divzero(), and enabled again by 
+set_divzero(). With Borland, these functions do nothing.
+
+Trig functions are implemented using lookup tables, which are fast although
+not very accurate. Angles are represented in a binary format with 256
+equal to a full circle, 64 being a right angle and so on. This has the
+advantage that a simple bitwise 'and' can be used to keep the angle within
+the range zero <-> a full circle. The sin, cos and tan functions only
+require a single table lookup, so they are very fast. The square root and 
+inverse trig use iterative algorithms and are therefore significantly 
+slower.
+
+fixed fsin (fixed x);               / sin table lookup
+fixed fcos (fixed x);               / cosine table lookup
+fixed ftan (fixed x);               / tangent table lookup
+fixed fasin (fixed x);              / search table for inverse sin
+fixed facos (fixed x);              / search table for inverse cosine
+fixed fatan (fixed x);              / search table for inverse tangent
+fixed fatan2 (fixed y, fixed x);    / like floating point atan2()
+fixed fsqrt (fixed x);              / fixed point square root routine
+
+
+
+***********************************************************
+************ Graphical User interface routines ************
+***********************************************************
+
+Allegro contains a simple object-oriented dialog manager, which allows the
+programmer to easily define new GUI object types by providing a dialog
+procedure for each one.
+
+A dialog is stored as an array of object structures in the form:
+
+struct {
+   short (*proc)();     / dialog procedure for the object
+   short x, y, w, h;    / position and size of the object
+   char fg, bg;         / foreground and background color of the object
+   char key;            / keyboard shortcut for this object (ASCII code)
+   char flags;          / flags about the object state
+   short d1, d2;        / any data the object might require
+   void *dp;            / pointer to more object data
+} DIALOG;
+
+The last element in the array should have the proc pointer set to NULL.
+
+The flags field may contain any or all of the values:
+   D_SELECTED - this object is currently selected
+   D_GOTFOCUS - this object currently has the focus for keyboard input
+   D_EXIT     - a click on this object should close the dialog
+
+The dialog procedure should be declared as:
+   short <procedure_name> (short msg, DIALOG *d, long c);
+This will be called by the dialog manager whenever any action concerning
+the object is required, and will be passed a message flag (msg) indicating
+what has taken place, a pointer to the object concerned (d), and if msg
+is MSG_CHAR, the value of the keycode (c). The dialog procedure should
+return one of the values D_O_K (normal status), D_CLOSE (to close the
+dialog) or D_REDRAW (to redraw all the objects in the dialog).
+
+Possible values for msg are:
+   MSG_START     - start the dialog, performing any necessary initialisation
+   MSG_DRAW      - requests the object to draw itself
+   MSG_CLICK     - informs the object of a mouse click on itself
+   MSG_DCLICK    - follows a MSG_CLICK when a double-click occurs
+   MSG_KEY       - the keyboard shortcut for the object has been pressed
+   MSG_WANTFOCUS - asks the object if it wants the input focus. The dialog
+		   procedure should return non-zero if it does
+   MSG_GOTFOCUS  - informs the object that it now has the input focus
+   MSG_LOSTFOCUS - informs the object that it has lost the input focus
+   MSG_CHAR      - informs the object of a keypress (the object must have
+		   the input focus). The key will be contained in c.
+   MSG_END       - the dialog is finished - perform any neccessary cleanup
+
+Allegro provides some pre-written dialog procedures. You can use these
+to easily obtain simple user interface objects, or you can call them from
+within your own dialog procedures, to obtain a sort of object-oriented
+class inheritance. These procedures are:
+
+short d_box_proc (short msg, DIALOG *d);
+   A box. This object can do nothing except to draw itself.
+
+short d_shadow_box_proc (short msg, DIALOG *d);
+   Like d_box_proc(), but draws the box with a shadow.
+
+short d_text_proc (short msg, DIALOG *d);
+   A text object (the dp field points to the string). This object can do
+   nothing except to draw itself.
+
+short d_button_proc (short msg, DIALOG *d);
+   A button object (the dp field points to the text string). This object
+   can be selected and deselected by clicking on it with the mouse or by
+   pressing its keyboard shortcut. If the D_EXIT flag is set, selecting it
+   will close the dialog.
+
+short d_check_proc (short msg, DIALOG *d);
+   A check-box object (the dp field points to the text string). This object
+   can be selected and deselected by clicking on it with the mouse or by
+   pressing its keyboard shortcut.
+
+short d_edit_proc (short msg, DIALOG *d, char c);
+   An editable text object (the dp field points to the string). When it
+   has the input focus (obtained by clicking on it with the mouse), text
+   can be typed into this object. The d1 field specifies the maximum
+   number of characters that it will accept.
+
+short d_list_proc (short msg, DIALOG *d, char c);
+   A list box object. The dp field points to a function which it will call
+   to obtain information about the list. This should follow the form:
+      char *<list_func_name> (short index, short *list_size);
+   If index is zero or positive, the function should return a pointer to
+   the string which is to be displayed at position index in the list. If
+   index is  negative, it should return null and list_size should be set
+   to the number of items in the list. The list box object will allow the
+   user to scroll through the list, and to select items list by clicking
+   on them, and if it has the input focus by using the arrow keys. If the
+   D_EXIT flag is set, double clicking on a list item will cause it to close
+   the dialog. The index of the selected item is held in the d1 field, and
+   d2 is used to store how far it has scrolled through the list.
+
+To display and animate a dialog, call one of the functions:
+
+short do_dialog (DIALOG *dialog);
+   The basic dialog manager. The list of dialog objects should be
+   terminated by one with a null dialog procedure.
+   Returns the index of the object which caused it to exit.
+
+short popup_dialog (DIALOG *dialog);
+   Like do_dialog(), but it stores the data on the screen before drawing
+   the dialog and restores it when the dialog is closed. The screen area
+   to be stored is calculated from the dimensions of the first object in
+   the dialog, so all the other objects should lie within this one. If
+   there is not enough memory to save the screen data, the dialog will be
+   displayed anyway, and errno will be set to ENOMEM.
+
+short alert (char *s1, *s2, *s3, char *b1, *b2, char c1, c2);
+   Displays a simple alert box, containing three lines of text (s1-s3),
+   and with either one or two buttons. The text for these buttons is passed
+   in b1 and b2 (b2 may be null), and the keyboard shortcuts in c1 and c2.
+   Returns 1 or 2 depending which button was selected.
+
+short file_select (char *message, char *path);
+   Displays the Allegro file selector, with message as the caption. Allows
+   the user to select a file, and stores the selection in path (which
+   should have room for at least 80 characters). Returns zero if it was
+   closed with the Cancel button, non-zero if it was OK'd.
+
+
+
+*********************************************************
+************ Differences, bugs, and features ************ 
+*********************************************************
+
+I have had problems whenever I take the addresses of stack variables in an 
+interrupt handler. In particular, sprintf() and dosmemput() both fail when 
+used with local variables, and work when used with globals. I haven't 
+properly investigated this, but my guess is that gcc assumes ss=ds, and 
+this isn't always true in an interrupt context. So be careful!
+
+The Borland version does a shift and subtract loop for fixed point 
+division, while the djgpp version uses the extended divide instruction and 
+detects overflow by trapping the division by zero interrupt. This means 
+that set_divzero() and remove_divzero() have no effect on the Borland 
+version (and the djgpp version is _much_ faster).
+
+The Borland version can't create bitmaps (or anything else for that 
+matter) larger than 64K.
+
+The Borland version is generally much slower, more awkward, and crappier 
+than the djgpp one. What a compiler djgpp is. I love it. Thank you DJ 
+Delorie, the good folks at gnu, and everyone else who contributed to it.
+
+
+
+***************************************
+************ In Conclusion ************
+***************************************
+
+<insert witty anecdote here>
+
+There. Every time you look at that you can think of a different funny 
+story. If you don't think mine is any good (well, you probably won't, 
+since you don't know what it is), you can insert one of your own.
+Complete flexibility, uniquely tailored to your individual needs.
+
+Enjoy. If you find any of this stuff useful, write and tell me about it.
+I want to hear from you!
+
+
+By Shawn Hargreaves,
+1 Salisbury Road,
+Market Drayton,
+Shropshire,
+England TF9 1AJ
+email slh100@tower.york.ac.uk (until 1996)

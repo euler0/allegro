@@ -1,0 +1,69 @@
+
+=============================================================
+============ Changes from 3.1 to 3.11 (Feb 1999) ============
+=============================================================
+
+   Cleaned up a few places where memory wasn't getting freed during the 
+   system shutdown. A cosmetic detail since the OS will free it for us, but 
+   it is nice to get these things right.
+
+   Alessandro Monopoli added an Italian translation of the system messages.
+
+   Henrik Stokseth added code to distinguish between win95 and win98.
+
+   Creative Labs have been removed from the THANKS file, because of their 
+   refusal to release any specs on the SB Live soundcard.
+
+   Changed the name of the library. After years of thinking that Allegro was 
+   a word with no particular meaning, I realised that it is in fact a 
+   recursive acronym for "Allegro Low Level Game Routines".
+
+   Established a new mailing list (conductors@canvaslink.com) for use by the 
+   people currently working on Allegro. Please send code contributions to 
+   this list rather than directly to me (Shawn Hargreaves), because this 
+   will allow Allegro development to continue even if I'm not around or am 
+   busy with something else at the moment.
+
+   Andreas Kluge wrote a driver for Ensoniq Soundscape cards.
+
+   More localisation: Swedish message translation by Sven Sandberg, Anton 
+   Ragnarsson, and Erik Sandberg, Finnish message translation by Antti 
+   Haapala, and Russian message translation and keyboard mapping by Dmitriy 
+   Kazimirow.
+
+   The midi_out() function now correctly updates the pan/volume/bend 
+   controller status.
+
+   Kester Maddock added a Wingman Warrior joystick driver.
+
+   Fixed some problems with the Sidewinder, Gamepad Pro, and SNES joypad 
+   drivers.
+
+   Changed the SB16 driver to use signed 16 bit output mode, rather than the 
+   previous unsigned format. Hopefully this will improve compatibility with 
+   crappy clone hardware.
+
+   Added a new WARNMODE environment switch to the makefile. Allegro 
+   developers should all set this to get strict warnings, but it will be 
+   left off by default so that the distributed version will be more 
+   forgiving about different compiler/libc versions.
+
+   Fixed problem with reading the top and left positions on digital joystick 
+   devices.
+
+   Fixed (I think, still waiting accurate confirmation on this one :-) 
+   problem with timers running too fast on some motherboards.
+
+   Fixed stupid bug where get_align_matrix() wasn't bothering to zero the 
+   translation vector.
+
+   Fixed stupid bug where rotated sprites were coming out upside down in 
+   mode-X and hi/truecolor modes.
+
+   Fixed bug where dat utility was truncating long filenames to 8.3 format.
+
+   Renamed the ChangeLog file to CHANGES, to avoid problems on 8.3 systems.
+
+   Various other minor bugfixes.
+
+

@@ -1,0 +1,68 @@
+
+   These are some (very approximate) timings produced by the test program,
+   running on my 486 DX33 with a Tseng ET4000 graphics card.
+
+   All times are the number of operations per second, without accounting
+   for the overhead of looping and random number generation. Except for 
+   the clear(), these were all writing to video memory. Using regular
+   memory instead should (especially with the djgpp version) result in a 
+   big speed increase.
+
+
+   <operation>          <djgpp>     <borland>
+
+
+   putpixel():          116395         66049
+
+   hline():              57581         34494
+
+   vline():              41065         29133
+
+   line():                7683          7332
+
+   rect():               15808         12761
+
+   rectfill():            2305          2023
+
+   triangle():            1158           932
+
+   circle():              1830          1542
+
+   circlefill():          1115           679
+
+   textout(12 chars):     1802          1736
+
+   fmul():              356984        133386
+
+   fdiv():              316115         32975
+
+   fsqrt():              30204          9188
+
+   fsin():             3018275        338547
+
+   fcos():             2553903        345610
+
+   ftan():             3018248        342044
+
+   fasin():             101579         59814
+
+   facos():             101271         60580
+
+   fatan():             102739         66887
+
+   fatan2():             79366         21607
+
+   clear(320x200 bitmap):  477           243
+
+   blit(320x200 and
+   three 64x32 bitmaps):   153           151
+
+   16x16 sprite:
+      opaque:            28867         20464
+      word aligned:      35227         25400
+      masked:            13310          9852
+
+   32x32 sprite:
+      opaque:             9312          7467
+      word aligned:      11590         10443
+      masked:             3797          2974

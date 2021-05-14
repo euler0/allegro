@@ -1,0 +1,116 @@
+
+		//  /     /     ,----  ,----.  ,----.  ,----.
+	      / /  /     /     /      /    /  /    /  /    /
+	    /  /  /     /     /___   /       /____/  /    /
+	  /---/  /     /     /      /  __   /\      /    /
+	/    /  /     /     /      /    /  /  \    /    /
+      /     /  /____ /____ /____  /____/  /    \  /____/
+
+
+This file describes the grabber utility program. See allegro.txt for 
+instructions on the Allegro library itself, and readme.txt for information 
+about how to compile Allegro.
+
+An Allegro data file is a bit like a .zip file in that it consists of lots 
+of different pieces of data stuck together one after another. This means 
+that your game doesn't have to clutter up the disk with hundreds of tiny 
+files, and it makes programming easier because you can load everything with 
+one Allegro function call (well actually two: load_datafile() at program 
+startup and unload_datafile() when you are finished). Another benefit is 
+that the file compression algorithm works much better with one large file 
+than with several small ones. To create and modify data files, you must use 
+the grabber utility program.
+
+This program requires a mouse.
+
+
+------------ GRABBER OPTIONS ------------
+
+"Load":
+   Surprisingly, this loads a data file into the grabber program.
+
+"Save":
+   Saves a data file. If you have checked the "pack file" button the data 
+   will be compressed, which may take a while but will reduce the amount 
+   of disk space required. As well as saving the data file, the grabber 
+   creates a C header file with the same name as the data file (if you 
+   saved x.dat it would create x.h as well) that contains the index of 
+   each data item within the file. You can use these values in your 
+   programs to access the data items (see the demo game for an example), 
+   and this header file is also needed by the grabber's load routine to 
+   figure out what each item is called.
+
+"Import Graphics":
+   Imports a graphics file into the grabber's image buffer. The 
+   grabber can handle 256 color PCX files and several Atari formats 
+   (NEOChrome, Degas, and Degas Compressed).
+
+"View Graphics":
+   Displays the current contents of the image buffer.
+
+"Grab Graphics":
+   Grabs a sprite, bitmap, or pallete from the image buffer into the data 
+   file. Grabbing a pallete will take you straight to the pallete editing 
+   screen. When you grab a sprite or bitmap you will be asked to select 
+   the dimensions of the area to grab (use the left button to decrease the 
+   value, the right to increase, shift-click to move in steps of 10), and 
+   you can then use the mouse to select the area of the image to grab (you 
+   can only grab from positions aligned in a 16x16 grid).
+
+"Create Font":
+   Creates a font, and takes you to the font editing screen.
+
+"Import Data":
+   Imports binary data. This can be anything you like: text for a 
+   scroller, sound samples, map data, etc.
+
+"Edit Item":
+   Edits the currently selected item. This is the same as double-clicking 
+   on an item in the list box.
+
+"Delete Item":
+   Deletes the currently selected item.
+
+"Quit":
+   I'm not going to insult your intelligence by trying to explain this.
+   You wouldn't understand it anyway.
+
+
+------------ PALLETE EDITOR OPTIONS ------------
+
+At the top of the screen, you can alter the name of the pallete (which 
+will be written to the C header file), and switch it between 16 and 256 
+colors. In the middle of the screen you can select specific colors and 
+alter their red, green and blue components (right and left mouse buttons, 
+shift to move in steps of 10), and at the bottom of the screen you can 
+select the pallete, which means that it will be used when you export 
+and view sprite or bitmap data.
+
+
+------------ SPRITE/BITMAP EDITOR OPTIONS ------------
+
+You can alter the name of the sprite/bitmap, switch it between 16 and 256 
+colors, view it (using the currently selected pallete), or export it (also 
+using the current pallete) to a PCX, NEOChrome, or Degas file.
+
+
+------------ FONT EDITOR OPTIONS ------------
+
+The entire alphabet is displayed in the middle of the screen. Click on a 
+character to select it, then alter pixels in the grid by clicking with the 
+left (to set) or right (to clear) mouse buttons.
+
+
+------------ DATA ITEM EDITOR OPTIONS ------------
+
+This is the simplest of the lot. You can have a look at an ascii display 
+of the start of the data, and you can export it to a file.
+
+
+
+By Shawn Hargreaves,
+1 Salisbury Road,
+Market Drayton,
+Shropshire,
+England TF9 1AJ
+email slh100@tower.york.ac.uk (until 1996)

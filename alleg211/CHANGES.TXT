@@ -1,0 +1,212 @@
+Changes from 2.1 to 2.11 (November 1996)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Since Shawn is off the net, he was unable to respond to the problem
+compiling Allegro with DJGPP 2.01.  I am releasing this update to
+(hopefully) stop the recent flood of messages regarding it.
+
+This problem was:  in bank.s, two lines both saying "incl %ah" should
+be "incb %ah".  This was ignored by bnu252 (DJGPP 2.00), but bnu27 (DJGPP
+2.01) issues an error.
+
+Other changes:
+ o  A bug in mouse.c did not set the mouse range when the mouse was
+    installed.  Now the mouse range defaults to (0,0, SCREEN_W-1,
+    SCREEN_H-1).
+
+ o  In sb.c, when it is initialized, the volume defaults to
+    maximum.  This is fine if you have a volume dial, as most people
+    do, but in my case (and presumably others), the only way to change
+    the volume is in software.  Now, it does not set the volume to max
+    when you initialize sound.  This does not affect set_volume() or any
+    other part of the sound code.
+
+All changes I made are marked with /* BGD */.  If you have any questions
+regarding these changes, email me.  comp.os.msdos.djgpp is still the best
+place for general questions about Allegro.
+
+Ben Darnell
+bdarnell@vnet.net
+http://users.vnet.net/bdarnell
+
+
+
+Changes from 2.0 to 2.1 (June 1996)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Mode-X support (thanks to Jonathan Tarbox and Dominique Biesmans for 
+   suggesting and then helping to implement this).
+
+   Compiled sprites.
+
+   Jonathan Tarbox contributed an FLI/FLC player.
+
+   Added patterned drawing modes.
+
+   Added a vertical retrace interrupt simulator.
+
+   polygon() can now handle concave and self-intersecting shapes. I also 
+   changed the parameters a bit. Sorry if this breaks your old code, but 
+   it's more efficient the new way...
+
+   Added stretch_sprite().
+
+   Wrote a floodfill() routine.
+
+   More flexible pallete fade routines.
+
+   Added set_volume() to the sound code.
+
+   David Calvin wrote a sound setup utility.
+
+   Improved the GUI. Added popup/dropdown menus, joystick input, three 
+   button alert boxes, better handling of arrow key focus movement, a new 
+   keyboard shortcut object (d_keyboard_proc()), and '&' markers in strings 
+   to display keyboard shortcuts. The GUI can also now be used with fonts 
+   other than the standard 8x8 default, by altering the global 'font' 
+   pointer.
+
+   Fabian Nunez added support for the CH Flightstick Pro joystick (looks 
+   cool: I want one :-) and 3-button mice.
+
+   The keyboard handler now responds to the state of the ctrl and alt keys, 
+   and there is a new simulate_keypress() function.
+
+   Mark Wodrich added sub-bitmaps, which share their memory with a parent 
+   bitmap but can be positioned anywhere within it, and have their own 
+   clipping rectangles.
+
+   Mark also modified the mouse driver to double-buffer the pointer (so it 
+   doesn't flicker any more), and added a set_mouse_sprite_focus() function.
+
+   Added set_mouse_range() and set_mouse_speed() functions.
+
+   Thanks (again) to Mark Wodrich, the grabber can now import GRX .FNT files.
+
+   The grabber can now make backups when saving datafiles, and it only 
+   writes the datafile headers if their contents have changed, to prevent 
+   unnecessary recompilation.
+
+   Added a text_height() function.
+
+   The fixed point inverse sin and inverse cos functions now use lookup 
+   tables, which makes them a lot faster.
+
+   Reorganised the directory structure, added some example programs, and 
+   improved the documentation.
+
+
+Changes from 2.0 beta to release version (March 1996)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Marcel de Kogel fixed some problems with the MPU-401 driver. It now 
+   actually works :-)
+
+   Marcel also provided some better drum sounds for the Adlib driver.
+
+   Inlined the fmul() and fdiv() functions.
+
+   Much faster fsqrt(), taken from Arne Steinarson's fix-float library.
+
+   Added inline bmp_write_line(), bmp_read_line(), and _putpixel() functions.
+
+   The keyboard routines now support the emergency abort sequence 
+   ctrl+alt+del, and there are signal handlers to make sure Allegro will 
+   shut down cleanly if your program crashes.
+
+   Wrote new irq wrappers that can deal with reentrant interrupts.
+
+   Added joystick routines (based on code provided by Jonathan Tarbox and 
+   Marcel de Kogel).
+
+   Moved some functions to different files and juggled things about so the 
+   linker can do a better job. If you don't use the sound stuff, or don't 
+   use any graphics functions, now they won't be linked into your executable.
+
+   Marcel de Kogel manged to locate my (embarrassingly stupid :-) mistake 
+   which was preventing the VESA 2.0 linear framebuffer driver from working.
+
+   Various other performance enhancements and bug fixes.
+
+
+Changes from Allegro 1.x to 2.0 beta (Jan/Feb 1996)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Dropped all the Borland code. A couple of months ago I ran out of disk 
+   space, and it was with great satisfaction the I executed the command 
+   'deltree /y c:\bc4'. It was a horrible compiler, and I'm glad it's dead.
+
+   Added SVGA support. As a result it no longer makes sense for 
+   allegro_init() to put the system into mode 13h, so you will be in text 
+   mode until you call set_gfx_mode().
+
+   Added sound code (background MIDI music and sample mixing).
+
+   Added support for proportional fonts (of any size) as well as the old 8x8 
+   fixed size ones.
+
+   XOR drawing mode.
+
+   There is no longer such a thing as a SPRITE structure. The sprite drawing 
+   code now draws bitmaps onto other bitmaps, which is a much more flexible 
+   way of doing things. The datafile reader will convert all your old 
+   sprites to bitmaps as it loads them in, so the only practical difference 
+   this is likely to make is that the sprite drawing routines can't draw 
+   opaque sprites any more (but you can use a blit instead).
+
+   show() and get_sprite() no longer exist: use blit() instead.
+
+   Added flipped and rotated sprite draw routines.
+
+   Added bitmap scaling.
+
+   Added RLE sprites.
+
+   drawsprite() has been renamed to draw_sprite().
+
+   textmode() has been renamed to text_mode(), to avoid conflicts with 
+   definitions in conio.h.
+
+   All the file access functions have been renamed from the stdio syntax to 
+   pack_fopen(), pack_getc(), etc, so they can now be mixed with stdio code.
+
+   Added pack_fgets() and pack_fputs().
+
+   The port_callback pointer no longer exists.
+
+   Removed polyline() (who ever used it?), and added a polygon(), which 
+   draws a filled convex polygon with an arbitrary number of vertices.
+
+   Added do_line() and do_circle() functions, which call a user-supplied 
+   function for each pixel that needs to be drawn.
+
+   Added a default keyboard interface to the GUI routines, allowing the 
+   selection of objects with the arrow keys and <enter>.
+
+   Added several new GUI messages and flags. In particular there are now 
+   messages for tracking mouse cursor movement, an idle message, a special 
+   return value for the MSG_CHAR message which allows an object to override 
+   the default keyboard handling, and a flag which hides the object.
+
+   There are new GUI routines to centre a dialog on the screen and to alter 
+   the colors used by the standard alert and file selector dialogs.
+
+   The file selector now takes a third parameter specifying which file 
+   extensions to display.
+
+   The timer routines now have better than millisecond accuracy, and it is 
+   possible to alter the speed of a user timer callback in realtime (by 
+   reinstalling it with a different speed value).
+
+   Removed the _RGB struct and paltorgb() functions. RGB's are now stored 
+   directly in the hardware format, with each value in the range 0-63.
+
+   Added functions to get and set single pallete entries as well as entire 
+   palletes.
+
+   Added DPMI memory locking code.
+
+   Wrote a C++ 'fix' class which overloads a lot of operators, providing an 
+   easy way to use the fixed point routines.
+
+   There are probably lots of other things that I have forgotten about.
+

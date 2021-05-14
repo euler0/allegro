@@ -1,0 +1,87 @@
+#################################################
+#                                               #
+#     Allegro makefile, by Shawn Hargreaves     #
+#                                               #
+#     This will only work if you unzipped       #
+#     Allegro with the -d flag to pkunzip       #
+#                                               #
+#################################################
+
+CFLAGS = -I. -Isrc -Wall -m486 -O3
+SFLAGS = -I. -Isrc -Wall
+LFLAGS = -s
+
+VPATH = demo examples setup src tests tools
+
+PROGRAMS = demo setup mathtest play playfli test grabber pack examples
+
+OBJS = adlib.o allegro.o ati.o bank.o blit.o cirrus.o datafile.o dma.o \
+       file.o fli.o graphics.o gui.o gus.o inline.o irq.o irqwrap.o \
+       joystick.o keyboard.o math.o midi.o misc.o modex.o mouse.o mpu.o \
+       sb.o s3.o sound.o sprite.o timer.o trident.o tseng.o vbeaf.o \
+       vesa.o vga.o video7.o xgfx.o
+
+LIB_OBJS = $(addprefix obj/, $(OBJS))
+
+.PRECIOUS : obj/%.o
+
+.PHONY : all $(PROGRAMS)
+
+all : liballeg.a $(PROGRAMS)
+
+obj/%.o : %.c allegro.h
+	gcc $(CFLAGS) -o $@ -c $<
+
+obj/%.o : %.cc allegro.h
+	gcc $(CFLAGS) -o $@ -c $<
+
+obj/%.o : %.S asmdefs.h asmdef.h
+	gcc $(SFLAGS) -o $@ -c $<
+
+*/%.exe : obj/%.o liballeg.a
+	gcc $(LFLAGS) -o $@ $< liballeg.a
+
+src/asmdef.h : obj/asmdef.exe
+	obj/asmdef.exe src/asmdef.h
+
+obj/asmdef.exe : asmdef.c allegro.h internal.h
+	gcc $(CFLAGS) $(LFLAGS) -o $@ $<
+
+setup/setup.exe : obj/setup.o liballeg.a
+	gcc $(LFLAGS) -o setup/setup.exe obj/setup.o liballeg.a -liostream
+
+liballeg.a : $(LIB_OBJS)
+	ar rs liballeg.a $(LIB_OBJS)
+
+demo : demo/demo.exe
+setup : setup/setup.exe
+mathtest : tests/mathtest.exe
+play : tests/play.exe
+playfli : tests/playfli.exe
+test : tests/test.exe
+grabber : tools/grabber.exe
+pack : tools/pack.exe
+
+examples : examples/ex1.exe examples/ex2.exe examples/ex3.exe \
+	   examples/ex4.exe examples/ex5.exe examples/ex6.exe \
+	   examples/ex7.exe examples/ex8.exe examples/ex9.exe \
+	   examples/ex10.exe examples/ex11.exe examples/ex12.exe \
+	   examples/ex13.exe examples/ex14.exe examples/ex15.exe \
+	   examples/ex16.exe examples/ex17.exe examples/ex18.exe \
+	   examples/ex19.exe examples/ex20.exe examples/ex21.exe
+
+# dependencies...
+
+obj/demo.o : demo.h
+obj/adlib.o : fm_instr.h
+obj/irq.o : asmdefs.h asmdef.h
+obj/graphics.o : opcodes.h
+obj/ex12.o obj/ex13.o : example.h
+obj/ex21.o : running.h
+
+INTERNAL_DEPS = adlib.o allegro.o ati.o cirrus.o dma.o fli.o graphics.o \
+		gui.o gus.o inline.o irq.o joystick.o keyboard.o midi.o \
+		modex.o mouse.o mpu.o sb.o s3.o sound.o timer.o tseng.o \
+		vbeaf.o vesa.o vga.o video7.o setup.o
+
+$(addprefix obj/, $(INTERNAL_DEPS)) : src/internal.h

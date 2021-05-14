@@ -1,0 +1,29 @@
+/* Allegro data file object indexes, produced by grabber.exe */
+/* Do not hand edit! */
+
+#define BOOM_SPL            0       /* (spl)  */
+#define BULLET              1       /* (rle)  */
+#define DEATH_SPL           2       /* (spl)  */
+#define END_TEXT            3       /* (data) */
+#define ENGINE_SPL          4       /* (spl)  */
+#define EXPLODE1            5       /* (rle)  */
+#define EXPLODE2            6       /* (rle)  */
+#define EXPLODE3            7       /* (rle)  */
+#define EXPLODE4            8       /* (rle)  */
+#define EXPLODE5            9       /* (rle)  */
+#define GAME_MUSIC          10      /* (midi) */
+#define GAME_PAL            11      /* (pal)  */
+#define GO_BMP              12      /* (bmp)  */
+#define INTRO_BMP_1         13      /* (bmp)  */
+#define INTRO_BMP_2         14      /* (bmp)  */
+#define INTRO_BMP_3         15      /* (bmp)  */
+#define INTRO_BMP_4         16      /* (bmp)  */
+#define SHIP_GO             17      /* (rle)  */
+#define SHIP_STILL          18      /* (rle)  */
+#define SHOOT_SPL           19      /* (spl)  */
+#define TITLE_BMP           20      /* (bmp)  */
+#define TITLE_FONT          21      /* (font) */
+#define TITLE_MUSIC         22      /* (midi) */
+#define TITLE_PAL           23      /* (pal)  */
+#define TITLE_TEXT          24      /* (data) */
+#define WELCOME_SPL         25      /* (spl)  */
